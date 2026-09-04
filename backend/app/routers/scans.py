@@ -294,14 +294,19 @@ def create_scan(
         raise HTTPException(status_code=400, detail="Uploaded image files were empty.")
 
     # -----------------------------------------------------
-    # 2. RUN CONTROLLED CONCURRENCY OCR (Max 2 Parallel Workers)
+    # 2. RUN CONTROLLED CONCURRENCY OCR & PARALLEL GEMINI VISION
     # -----------------------------------------------------
     side_ocr_results: Dict[str, Any] = {}
     combined_text_parts: List[str] = []
     all_bounding_boxes: List[Dict[str, Any]] = []
     all_ocr_confs: List[float] = []
 
-    with ThreadPoolExecutor(max_workers=2) as executor:
+    gemini_future = None
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        # Launch Gemini Vision concurrently in the background while CPU processes local OCR
+        if _gemini_vision.client:
+            gemini_future = executor.submit(_gemini_vision.analyze_product_label, saved_filepaths)
+
         ocr_outputs = list(executor.map(_process_single_ocr, saved_filepaths))
 
     for idx, (side_label, ocr_res) in enumerate(zip(side_names, ocr_outputs)):
@@ -364,10 +369,10 @@ def create_scan(
     needs_manual_review = False
     local_ocr_fallback = False
 
-    if _gemini_vision.client:
+    if gemini_future:
         try:
-            logger.info("Running multimodal Gemini Vision analysis across packaging images...")
-            gemini_data = _gemini_vision.analyze_product_label(saved_filepaths)
+            logger.info("Awaiting concurrent multimodal Gemini Vision analysis result...")
+            gemini_data = gemini_future.result(timeout=25)
             logger.info(f"Gemini extraction result: {gemini_data}")
             if gemini_data:
                 gemini_dict = {

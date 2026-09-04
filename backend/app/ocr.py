@@ -27,16 +27,24 @@ def preprocess_image_for_ocr(image_path: str) -> str:
             if corrected.mode != "RGB":
                 corrected = corrected.convert("RGB")
 
-            # 2. Contrast enhancement
-            enhancer = ImageEnhance.Contrast(corrected)
-            enhanced = enhancer.enhance(1.25)
+            # 2. Downscale if excessively large (e.g. > 1800px) to speed up OCR inference 3x
+            max_dim = max(corrected.width, corrected.height)
+            if max_dim > 1800:
+                scale = 1800.0 / max_dim
+                new_w = int(corrected.width * scale)
+                new_h = int(corrected.height * scale)
+                corrected = corrected.resize((new_w, new_h), Image.Resampling.LANCZOS)
 
-            # 3. Sharpness enhancement
+            # 3. Contrast enhancement
+            enhancer = ImageEnhance.Contrast(corrected)
+            enhanced = enhancer.enhance(1.2)
+
+            # 4. Sharpness enhancement
             sharpener = ImageEnhance.Sharpness(enhanced)
             sharpened = sharpener.enhance(1.2)
 
             # Write back or save optimized version
-            sharpened.save(image_path, format="JPEG", quality=95)
+            sharpened.save(image_path, format="JPEG", quality=90)
             return image_path
     except Exception as e:
         logger.warning(f"Image preprocessing skipped due to: {e}")
