@@ -124,12 +124,17 @@ def generate_fpdf_report(scan_data: dict, file_path: str):
         ("Country of Origin", "country_of_origin")
     ]
 
+    # Map evaluated rules for exact state lookup
+    rules_eval_list = scan_data.get("rules_evaluated") or scan_data.get("extracted_fields", {}).get("rules_evaluated", [])
+    rule_by_key = {r.get("field_key"): r for r in rules_eval_list if isinstance(r, dict) and r.get("field_key")}
+
     pdf.set_font('helvetica', '', 7.5)
     for label, key in lmr_items:
         val = str(fields.get(key) or "Not Detected")
         meta = fusion_fields.get(key, {})
         side = str(meta.get("source_side", "Front")).upper()
-        conf = str(meta.get("confidence", "Medium")).capitalize()
+        rule_info = rule_by_key.get(key, {})
+        state = rule_info.get("detection_state")
 
         pdf.set_text_color(*NAVY)
         pdf.cell(50, 4.8, label, border=1)
@@ -140,15 +145,24 @@ def generate_fpdf_report(scan_data: dict, file_path: str):
         pdf.set_text_color(*GRAY_TEXT)
         pdf.cell(25, 4.8, side, border=1)
 
-        if conf == 'High':
+        if state == 'VERIFIED' or (val != 'Not Detected' and not meta.get('conflict')):
             pdf.set_text_color(*GREEN)
-            pdf.cell(30, 4.8, 'Verified', border=1, new_x="LMARGIN", new_y="NEXT")
-        elif conf == 'Low' or val == 'Not Detected':
+            pdf.cell(30, 4.8, 'Verified (Pass)', border=1, new_x="LMARGIN", new_y="NEXT")
+        elif state == 'NOT_VISIBLE':
+            pdf.set_text_color(*AMBER)
+            pdf.cell(30, 4.8, 'Not Visible (Review)', border=1, new_x="LMARGIN", new_y="NEXT")
+        elif state == 'UNCLEAR':
+            pdf.set_text_color(*AMBER)
+            pdf.cell(30, 4.8, 'Unclear (Review)', border=1, new_x="LMARGIN", new_y="NEXT")
+        elif state == 'NEEDS_MANUAL_REVIEW':
+            pdf.set_text_color(*AMBER)
+            pdf.cell(30, 4.8, 'Discrepancy (Review)', border=1, new_x="LMARGIN", new_y="NEXT")
+        elif state == 'CONFIRMED_MISSING':
             pdf.set_text_color(*RED)
-            pdf.cell(30, 4.8, 'Missing / Uncertain', border=1, new_x="LMARGIN", new_y="NEXT")
+            pdf.cell(30, 4.8, 'Confirmed Missing', border=1, new_x="LMARGIN", new_y="NEXT")
         else:
             pdf.set_text_color(*AMBER)
-            pdf.cell(30, 4.8, 'Single Source', border=1, new_x="LMARGIN", new_y="NEXT")
+            pdf.cell(30, 4.8, 'Not Detected (Review)', border=1, new_x="LMARGIN", new_y="NEXT")
 
     pdf.ln(3)
 

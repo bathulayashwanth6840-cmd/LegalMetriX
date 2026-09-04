@@ -433,7 +433,10 @@ def create_scan(
     try:
         rule_eval_output = _rule_engine.evaluate_rules(
             extracted_fields=extracted_fields,
-            images_count=len(saved_filenames)
+            images_count=len(saved_filenames),
+            fusion_fields=fusion_fields,
+            evidence_map=evidence_map,
+            ocr_raw_text=combined_full_text
         )
         verdict_str = rule_eval_output["verdict"]
         rules_evaluated_list = rule_eval_output["rules_evaluated"]
@@ -658,7 +661,13 @@ def verify_scan(
             }
 
     # Re-evaluate rules with verified fields
-    rule_eval = _rule_engine.evaluate_rules(fields, images_count=images_count)
+    rule_eval = _rule_engine.evaluate_rules(
+        fields,
+        images_count=images_count,
+        fusion_fields=old_ext.get("fusion_fields"),
+        evidence_map=old_ext.get("evidence_map"),
+        ocr_raw_text=scan.ocr_raw_text
+    )
     verdict_str = rule_eval["verdict"]
     rules_evaluated_list = rule_eval["rules_evaluated"]
     violations_data = rule_eval["violations_data"]
