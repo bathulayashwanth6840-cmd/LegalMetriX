@@ -1,0 +1,72 @@
+[
+    {
+        "code": "LMR_001",
+        "description": "MRP (Maximum Retail Price) declaration is missing or unreadable.",
+        "field": "mrp",
+        "severity": "HIGH",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_002",
+        "description": "Net Quantity declaration is missing.",
+        "field": "net_quantity",
+        "severity": "HIGH",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_003",
+        "description": "Manufacturing/Packing date is missing.",
+        "field": "mfg_date",
+        "severity": "HIGH",
+        "type": "presence"
+    },
+    {
+        "code": "FSSAI_001",
+        "description": "FSSAI license number is not detected (Required for food items).",
+        "field": "fssai_number",
+        "severity": "MEDIUM",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_004",
+        "description": "Consumer care details are missing.",
+        "field": "consumer_care",
+        "severity": "MEDIUM",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_005",
+        "description": "Manufacturer address details are missing.",
+        "field": "manufacturer_address",
+        "severity": "MEDIUM",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_006",
+        "description": "Product Name declaration is missing.",
+        "field": "product_name",
+        "severity": "HIGH",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_007",
+        "description": "Manufacturer/Packer name details are missing.",
+        "field": "manufacturer_name",
+        "severity": "HIGH",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_008",
+        "description": "Expiry or Best Before date is missing.",
+        "field": "expiry_date",
+        "severity": "MEDIUM",
+        "type": "presence"
+    },
+    {
+        "code": "LMR_009",
+        "description": "Country of Origin details are missing.",
+        "field": "country_of_origin",
+        "severity": "MEDIUM",
+        "type": "presence"
+    }
+]

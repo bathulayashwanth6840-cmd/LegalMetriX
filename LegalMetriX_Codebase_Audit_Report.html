@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LegalMetriX Codebase Audit Report — SIH 2024</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto space-y-8">
+    
+    <!-- Header -->
+    <header class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 sm:p-8 backdrop-blur shadow-2xl space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <span class="px-3 py-1 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-bold uppercase tracking-wider">
+          Official Audit Dossier
+        </span>
+        <span class="text-xs font-mono text-slate-400">Date: September 2026</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+        LegalMetriX — Codebase & Feature Audit Report
+      </h1>
+      <p class="text-sm text-slate-300">
+        Smart India Hackathon (SIH) Compliance Platform Inspection • Legal Metrology Packaged Commodity Checker
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/60 text-xs">
+          <span class="text-slate-400 block text-[11px]">Audit Mode</span>
+          <span class="font-bold text-emerald-400">Zero-Modification / Read-Only</span>
+        </div>
+        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/60 text-xs">
+          <span class="text-slate-400 block text-[11px]">Core Tech Stack</span>
+          <span class="font-bold text-blue-300">FastAPI • React • PaddleOCR • Gemini 2.5</span>
+        </div>
+        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700/60 text-xs">
+          <span class="text-slate-400 block text-[11px]">Statutory Scope</span>
+          <span class="font-bold text-amber-300">Legal Metrology Rules, 2011</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Executive Summary Table -->
+    <section class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+      <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+        <span>📋</span> Executive Audit Summary: 5 Target Features
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-900/80 text-slate-400 border-b border-slate-700 uppercase tracking-wider font-semibold">
+              <th class="p-3">Feature</th>
+              <th class="p-3">Status</th>
+              <th class="p-3">Evidence in Code</th>
+              <th class="p-3">Actual Working?</th>
+              <th class="p-3">What is Missing</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-700/60">
+            <tr class="hover:bg-slate-700/30 transition-colors">
+              <td class="p-3 font-bold text-white">1. AI / LLM Extraction</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">IMPLEMENTED</span></td>
+              <td class="p-3 font-mono text-[11px] text-blue-300">gemini_vision.py:L40-140<br/>scans.py:L367-409</td>
+              <td class="p-3 text-slate-200">Yes (Gemini 2.5 Flash multimodal vision + Pydantic schema)</td>
+              <td class="p-3 text-slate-400">None for basic extraction.</td>
+            </tr>
+            <tr class="hover:bg-slate-700/30 transition-colors">
+              <td class="p-3 font-bold text-white">2. Confidence & Uncertainty</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">IMPLEMENTED</span></td>
+              <td class="p-3 font-mono text-[11px] text-blue-300">fusion.py:L18-160<br/>scans.py:L105-156</td>
+              <td class="p-3 text-slate-200">Yes (3-tier system: OCR %, fusion agreement %, and rule score)</td>
+              <td class="p-3 text-slate-400">None. Discrepancies trigger needs_review status.</td>
+            </tr>
+            <tr class="hover:bg-slate-700/30 transition-colors">
+              <td class="p-3 font-bold text-white">3. Image Evidence / Highlighting</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">PARTIAL</span></td>
+              <td class="p-3 font-mono text-[11px] text-blue-300">ocr.py:L112-150<br/>extractor.py:L120-133<br/>ScanPage.tsx:L1264</td>
+              <td class="p-3 text-slate-200">Partial (Panel side switching & backend coordinates work; main canvas overlay missing)</td>
+              <td class="p-3 text-slate-400">Visual polygon bounding box overlay on the main scan preview canvas.</td>
+            </tr>
+            <tr class="hover:bg-slate-700/30 transition-colors">
+              <td class="p-3 font-bold text-white">4. Mobile-First Field Inspection</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">IMPLEMENTED</span></td>
+              <td class="p-3 font-mono text-[11px] text-blue-300">CameraCapture.tsx:L1-351<br/>Navigation.tsx:L130-147</td>
+              <td class="p-3 text-slate-200">Yes (Rear camera capture, mobile gallery upload, bottom nav, offline queue)</td>
+              <td class="p-3 text-slate-400">Native mobile PWA push notifications (optional).</td>
+            </tr>
+            <tr class="hover:bg-slate-700/30 transition-colors">
+              <td class="p-3 font-bold text-white">5. Hardware Dependency</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">NO SPECIAL HARDWARE</span></td>
+              <td class="p-3 font-mono text-[11px] text-blue-300">barcode.py:L8-71<br/>ocr.py:L56-163</td>
+              <td class="p-3 text-slate-200">Yes (100% software & cloud browser-based architecture)</td>
+              <td class="p-3 text-slate-400">None. Works on any smartphone camera + browser.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Architecture Pipeline -->
+    <section class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-xl space-y-4">
+      <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+        <span>⚙️</span> Current Pipeline Architecture
+      </h2>
+      <pre class="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs text-blue-300 overflow-x-auto leading-relaxed">
+[ Packaging Label Input ] (Camera / Multi-Panel Gallery / 360° Video Extractor)
+   │
+   ▼
+[ Client Preprocessing ] (imageCompressor.ts • imageQuality.ts • ImageCropModal.tsx)
+   │
+   ▼
+[ FastAPI Backend: POST /api/scans/ ]
+   ├──▶ 1. OpenCV + PyZBar Engine (app/barcode.py) ➔ EAN-13, UPC, Code 128
+   ├──▶ 2. PaddleOCR Local Engine (app/ocr.py) ➔ Raw text segments & polygon boxes
+   └──▶ 3. Gemini 2.5 Flash Vision (app/services/gemini_vision.py) ➔ Structured JSON
+   │
+   ▼
+[ Fusion & Reconciliation Engine ] (app/fusion.py)
+   • Compares Local OCR vs Gemini
+   • Computes 3-Tier Confidences (OCR %, Agreement %, Rule Score)
+   │
+   ▼
+[ Deterministic Rules Engine ] (app/rules_engine.py)
+   • Evaluates Rule 6, 11, 12 (LMR 2011) & FSSAI standards
+   • Generates Verdict: COMPLIANT / NEEDS REVIEW / NON-COMPLIANT
+   │
+   ▼
+[ Officer Enforcement UI ] (ScanPage.tsx / ScanDetail.tsx)
+   • Duplicate detection, manual review override & PDF Legal Notice</pre>
+    </section>
+
+    <!-- Top 3 Missing Features -->
+    <section class="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-xl space-y-4">
+      <h2 class="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+        <span>🚀</span> Top 3 Missing Features (Prioritized for SIH)
+      </h2>
+      <div class="space-y-3">
+        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-700 text-xs space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-amber-300">1. Visual Coordinate Bounding-Box Overlay on Image Canvas</h3>
+            <span class="text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded font-bold uppercase">High Priority</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed">Connect PaddleOCR polygon coordinates directly to render color-coded SVG/Canvas bounding rectangles on the packaging preview image.</p>
+        </div>
+        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-700 text-xs space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-amber-300">2. Font Size & Numeral Height Compliance (Rule 7 & Schedule II)</h3>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold uppercase">Medium Priority</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed">Measure physical printed numeral height against package display area to verify statutory millimeter minimums (2mm, 4mm, 6mm).</p>
+        </div>
+        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-700 text-xs space-y-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-amber-300">3. Dual-MRP & Price Sticker Tampering Detection (Section 18)</h3>
+            <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded font-bold uppercase">SIH Value Add</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed">Add price disparity checks and edge-detection filters to detect price stickers illegally pasted over manufacturer pre-printed prices.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-slate-500 pt-4">
+      LegalMetriX Enforcement Platform • SIH Hackathon Official Compliance Audit Dossier
+    </footer>
+
+  </div>
+</body>
+</html>
