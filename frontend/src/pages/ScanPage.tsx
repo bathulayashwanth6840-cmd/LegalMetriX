@@ -14,6 +14,7 @@ import ImageCropModal from '../components/ImageCropModal';
 import Video360Recorder from '../components/Video360Recorder';
 import { compressImage } from '../utils/imageCompressor';
 import { checkImageQuality } from '../utils/imageQuality';
+import { fileToDataUrl, resolveImageUrl, handleImageError } from '../utils/imageUtils';
 import { useLanguage } from '../i18n/LanguageContext';
 import { savePendingScan, syncPendingScans } from '../utils/offlineQueue';
 import type { PendingScan } from '../utils/offlineQueue';
@@ -460,7 +461,7 @@ export default function ScanPage() {
   useEffect(() => {
     return () => {
       Object.values(previewUrlsRef.current).forEach((url) => {
-        if (url) URL.revokeObjectURL(url);
+        if (url && url.startsWith('blob:')) URL.revokeObjectURL(url);
       });
     };
   }, []);
@@ -470,16 +471,16 @@ export default function ScanPage() {
     try {
       const compressed = await compressImage(file, 1600, 0.88);
       const quality = await checkImageQuality(compressed);
+      const dataUrl = await fileToDataUrl(compressed);
 
-      if (previewUrlsRef.current[side]) {
+      if (previewUrlsRef.current[side] && previewUrlsRef.current[side].startsWith('blob:')) {
         URL.revokeObjectURL(previewUrlsRef.current[side]);
       }
 
-      const newUrl = URL.createObjectURL(compressed);
-      previewUrlsRef.current[side] = newUrl;
+      previewUrlsRef.current[side] = dataUrl;
 
       setImages((prev) => ({ ...prev, [side]: compressed }));
-      setPreviewUrls((prev) => ({ ...prev, [side]: newUrl }));
+      setPreviewUrls((prev) => ({ ...prev, [side]: dataUrl }));
       setQualityInfo((prev) => ({
         ...prev,
         [side]: {
@@ -525,7 +526,7 @@ export default function ScanPage() {
     e.target.value = '';
   };
 
-  const handle360KeyframesExtracted = (result: Extracted360Result) => {
+  const handle360KeyframesExtracted = async (result: Extracted360Result) => {
     setCoverage360(result.coverageList);
 
     const updatedImages: Record<ProductSide, File | null> = {
@@ -541,23 +542,29 @@ export default function ScanPage() {
       right: '',
     };
 
-    (['front', 'back', 'left', 'right'] as ProductSide[]).forEach((side) => {
-      const kf = result.keyframes[side];
-      if (kf) {
-        updatedImages[side] = kf.file;
-        updatedPreviews[side] = kf.previewUrl;
-      }
-    });
+    await Promise.all(
+      (['front', 'back', 'left', 'right'] as ProductSide[]).map(async (side) => {
+        const kf = result.keyframes[side];
+        if (kf) {
+          updatedImages[side] = kf.file;
+          const dataUrl = kf.previewUrl.startsWith('data:')
+            ? kf.previewUrl
+            : await fileToDataUrl(kf.file);
+          updatedPreviews[side] = dataUrl;
+          previewUrlsRef.current[side] = dataUrl;
+        }
+      })
+    );
 
     setImages(updatedImages);
     setPreviewUrls(updatedPreviews);
   };
 
   const handleRemoveSide = (side: ProductSide) => {
-    if (previewUrlsRef.current[side]) {
+    if (previewUrlsRef.current[side] && previewUrlsRef.current[side].startsWith('blob:')) {
       URL.revokeObjectURL(previewUrlsRef.current[side]);
-      previewUrlsRef.current[side] = '';
     }
+    previewUrlsRef.current[side] = '';
     setImages((prev) => ({ ...prev, [side]: null }));
     setPreviewUrls((prev) => ({ ...prev, [side]: '' }));
     setQualityInfo((prev) => ({ ...prev, [side]: { warnings: [] } }));
@@ -580,16 +587,16 @@ export default function ScanPage() {
     try {
       const compressed = await compressImage(croppedFile, 1600, 0.9);
       const quality = await checkImageQuality(compressed);
+      const dataUrl = await fileToDataUrl(compressed);
 
-      if (previewUrlsRef.current[side]) {
+      if (previewUrlsRef.current[side] && previewUrlsRef.current[side].startsWith('blob:')) {
         URL.revokeObjectURL(previewUrlsRef.current[side]);
       }
 
-      const newUrl = URL.createObjectURL(compressed);
-      previewUrlsRef.current[side] = newUrl;
+      previewUrlsRef.current[side] = dataUrl;
 
       setImages((prev) => ({ ...prev, [side]: compressed }));
-      setPreviewUrls((prev) => ({ ...prev, [side]: newUrl }));
+      setPreviewUrls((prev) => ({ ...prev, [side]: dataUrl }));
       setQualityInfo((prev) => ({
         ...prev,
         [side]: {
@@ -1057,7 +1064,12 @@ export default function ScanPage() {
                       {preview ? (
                         <div className="w-full flex-1 flex flex-col items-center justify-between gap-3">
                           <div className="relative w-full h-40 bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200">
-                            <img src={preview} alt={`${side} preview`} className="w-full h-full object-contain" />
+                            <img
+                              src={resolveImageUrl(preview, apiUrl)}
+                              alt={`${side} preview`}
+                              className="w-full h-full object-contain"
+                              onError={(e) => handleImageError(e)}
+                            />
                             {quality?.dimensions && (
                               <span className="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-1.5 py-0.5 rounded font-mono">
                                 {quality.dimensions}
@@ -1325,9 +1337,10 @@ export default function ScanPage() {
                 <div className="relative flex-1 min-h-[300px] bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center border border-slate-200">
                   {previewUrls[selectedSideViewer] ? (
                     <img
-                      src={previewUrls[selectedSideViewer]}
+                      src={resolveImageUrl(previewUrls[selectedSideViewer], apiUrl)}
                       alt="Selected side packaging"
                       className="w-full h-full object-contain max-h-[380px]"
+                      onError={(e) => handleImageError(e)}
                       onLoad={(e) => {
                         const { naturalWidth, naturalHeight } = e.currentTarget;
                         if (naturalWidth && naturalHeight) {
@@ -1340,9 +1353,10 @@ export default function ScanPage() {
                     />
                   ) : scanResult?.image_path ? (
                     <img
-                      src={`${apiUrl}/uploads/${scanResult.image_path}`}
+                      src={resolveImageUrl(scanResult.image_path, apiUrl)}
                       alt="Primary packaging"
                       className="w-full h-full object-contain max-h-[380px]"
+                      onError={(e) => handleImageError(e)}
                       onLoad={(e) => {
                         const { naturalWidth, naturalHeight } = e.currentTarget;
                         if (naturalWidth && naturalHeight) {

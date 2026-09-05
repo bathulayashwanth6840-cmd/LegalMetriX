@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Eye, X, ShieldAlert, Check } from 'lucide-react';
 import type { FindingEvidence } from '../types/complaint';
+import { resolveImageUrl, handleImageError } from '../utils/imageUtils';
 
 interface EvidenceModalProps {
   isOpen: boolean;
@@ -63,9 +64,10 @@ export default function EvidenceModal({
             {finding.evidenceImageUrl ? (
               <div className="relative w-full h-full max-h-[300px] flex items-center justify-center">
                 <img
-                  src={finding.evidenceImageUrl}
+                  src={resolveImageUrl(finding.evidenceImageUrl)}
                   alt="Packaging Evidence"
                   className="w-full h-auto object-contain max-h-[300px]"
+                  onError={(e) => handleImageError(e)}
                 />
                 {finding.highlightBox && (
                   <div

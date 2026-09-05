@@ -7,6 +7,7 @@ import {
   ShieldCheck, FileWarning, ChevronRight
 } from 'lucide-react';
 import { createComplaintRecord } from '../services/complaintService';
+import { resolveImageUrl, handleImageError } from '../utils/imageUtils';
 
 const METROLOGY_FIELDS = [
   // Legal Metrology Act & Rules 2011 (LMR)
@@ -326,7 +327,24 @@ export default function ScanDetail() {
         marketDistrict: 'Enforcement Jurisdiction',
         inspectorName: 'Inspector Rajesh Sharma',
         inspectorBadge: 'LM-204',
-        packageImages: scan?.image_path ? [{ side: 'Front Panel', url: scan.image_path }] : [],
+        packageImages: (availableSides.length > 0
+          ? availableSides
+              .filter((s) => sidesOcr[s]?.image_path)
+              .map((s) => ({
+                side: `${s.toUpperCase()} Panel`,
+                url: resolveImageUrl(sidesOcr[s].image_path, apiUrl),
+              }))
+          : []
+        ).length > 0
+          ? availableSides
+              .filter((s) => sidesOcr[s]?.image_path)
+              .map((s) => ({
+                side: `${s.toUpperCase()} Panel`,
+                url: resolveImageUrl(sidesOcr[s].image_path, apiUrl),
+              }))
+          : scan?.image_path
+          ? [{ side: 'Front Panel', url: resolveImageUrl(scan.image_path, apiUrl) }]
+          : [],
       },
       findings,
       priority: failedList.length > 0 ? 'High' : 'Medium',
@@ -1129,7 +1147,7 @@ export default function ScanDetail() {
 
             <div className="relative flex-1 flex items-center justify-center min-h-[260px] max-h-[360px] bg-slate-950 rounded-xl overflow-hidden">
               <img 
-                src={`${apiUrl}/uploads/${sidesOcr[activeSide]?.image_path || scan.image_path}`}
+                src={resolveImageUrl(sidesOcr[activeSide]?.image_path || scan.image_path, apiUrl)}
                 alt="Scanned packaging"
                 className="max-h-[340px] w-full object-contain rounded-xl"
                 onLoad={(e) => {
@@ -1141,9 +1159,7 @@ export default function ScanDetail() {
                     }));
                   }
                 }}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/legal_metrology_logo.jpg';
-                }}
+                onError={(e) => handleImageError(e)}
               />
 
               {/* SVG Bounding Polygon Overlay */}
