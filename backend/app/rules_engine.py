@@ -970,35 +970,36 @@ class RuleEngine:
             })
 
         # ==========================================================
-        # OVERALL COMPLIANCE VERDICT DETERMINATION
+        # OVERALL COMPLIANCE VERDICT DETERMINATION (CANONICAL)
         # ==========================================================
         fail_items = [r for r in rules_evaluated if r["status"] == RuleResult.FAIL]
         review_items = [r for r in rules_evaluated if r["status"] == RuleResult.REVIEW]
+        mandatory_review_items = [r for r in review_items if r.get("is_mandatory", True)]
         pass_items = [r for r in rules_evaluated if r["status"] == RuleResult.PASS]
 
-        mandatory_fails = [r for r in fail_items if r["is_mandatory"]]
+        total_rules = len(rules_evaluated)
+        passed_count = len(pass_items)
+        failed_count = len(fail_items)
+        review_count = len(review_items)
 
-        if mandatory_fails:
+        # Canonical score: exact percentage of passed checks out of total checks evaluated
+        calculated_score = int(round((passed_count / total_rules) * 100)) if total_rules > 0 else 0
+
+        # RULE 1: If there are ANY genuine failed checks -> NON-COMPLIANT
+        if failed_count > 0:
             overall_verdict = "non_compliant"
             verdict_text = "NON-COMPLIANT"
-            verdict_summary = f"{len(mandatory_fails)} mandatory Legal Metrology requirement(s) conclusively violated."
-        elif review_items:
+            verdict_summary = f"{failed_count} mandatory Legal Metrology requirement(s) conclusively failed statutory verification."
+        # RULE 2: If no failed checks, but mandatory review items exist or data is incomplete -> REQUIRES REVIEW
+        elif len(mandatory_review_items) > 0 or total_rules == 0 or passed_count == 0:
             overall_verdict = "needs_review"
-            verdict_text = "NEEDS MANUAL REVIEW"
-            verdict_summary = f"{len(pass_items)} passed, {len(review_items)} declaration(s) require verification or multi-panel capture."
+            verdict_text = "REQUIRES REVIEW"
+            verdict_summary = f"Packaged commodity contains valid declarations. {len(mandatory_review_items)} mandatory declaration(s) require officer verification or multi-panel capture without assuming violation."
+        # RULE 3: 0 failed checks, 0 mandatory review items, all mandatory checks passed -> COMPLIANT
         else:
             overall_verdict = "compliant"
-            verdict_text = "COMPLIANT WITH CHECKED REQUIREMENTS"
-            verdict_summary = "All checked mandatory Legal Metrology packaging declarations verified successfully."
-
-        # Compute accurate 0-100 score
-        # Pass = +10 pts, Review = +6 pts, Fail = 0 pts
-        total_possible = len(rules_evaluated) * 10
-        earned_points = sum(
-            10 if r["status"] == RuleResult.PASS else (6 if r["status"] == RuleResult.REVIEW else 0)
-            for r in rules_evaluated
-        )
-        calculated_score = int(round((earned_points / total_possible) * 100))
+            verdict_text = "COMPLIANT"
+            verdict_summary = "All mandatory statutory declarations meet the Legal Metrology (Packaged Commodities) Rules, 2011."
 
         # Build violations format compatible with existing database and frontend
         violations_for_db = []
@@ -1022,10 +1023,10 @@ class RuleEngine:
             "score": calculated_score,
             "rules_evaluated": rules_evaluated,
             "violations_data": violations_for_db,
-            "passed_count": len(pass_items),
-            "review_count": len(review_items),
-            "failed_count": len(fail_items),
-            "total_rules": len(rules_evaluated)
+            "passed_count": passed_count,
+            "review_count": review_count,
+            "failed_count": failed_count,
+            "total_rules": total_rules
         }
 
     def evaluate(self, extracted_fields: Dict[str, Any]) -> List[Dict[str, Any]]:

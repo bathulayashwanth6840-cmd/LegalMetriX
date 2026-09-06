@@ -45,7 +45,7 @@ _gemini_vision = GeminiVisionService()
 
 
 def calculate_compliance_score(extracted_fields: Dict[str, Any], violations: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Calculates a realistic compliance score between 0 and 100 based on mandatory declarations and violations."""
+    """Calculates canonical compliance score and category based on mandatory declarations and actual violations."""
     mandatory_fields = [
         "product_name", "manufacturer_name", "manufacturer_address",
         "net_quantity", "mrp", "mfg_date", "expiry_date",
@@ -54,46 +54,37 @@ def calculate_compliance_score(extracted_fields: Dict[str, Any], violations: Lis
     present_fields = [f for f in mandatory_fields if extracted_fields.get(f) and str(extracted_fields.get(f)).strip()]
     missing_fields = [f for f in mandatory_fields if f not in present_fields]
     
-    # Base declaration coverage (0 to 100)
-    coverage_ratio = len(present_fields) / len(mandatory_fields)
-    base_score = coverage_ratio * 100.0
-
-    fail_count = sum(1 for v in violations if v.get("status") == "FAIL" or v.get("severity") == "HIGH")
+    total_fields = len(mandatory_fields)
+    present_count = len(present_fields)
+    
+    fail_count = sum(1 for v in violations if v.get("status") == "FAIL" or v.get("severity") == "HIGH" or v.get("detection_state") == "CONFIRMED_MISSING")
     review_count = sum(1 for v in violations if v.get("status") == "REVIEW" or v.get("severity") == "MEDIUM")
     low_count = sum(1 for v in violations if v.get("severity") == "LOW")
 
-    deductions = (fail_count * 20) + (review_count * 8) + (low_count * 2)
-    raw_score = base_score - deductions
+    # Canonical score based on verified declarations ratio
+    score = int(round((present_count / total_fields) * 100)) if total_fields > 0 else 0
 
-    final_score = int(max(10, min(100, round(raw_score))))
-    if not fail_count and len(present_fields) >= 7:
-        final_score = max(final_score, 88)
-
-    if final_score >= 90 and not fail_count:
-        category = "Excellent / Compliant"
-        grade = "A"
-        color = "green"
-    elif final_score >= 70 and not fail_count:
-        category = "Good / Minor Issues"
-        grade = "B"
-        color = "yellow"
-    elif final_score >= 40:
-        category = "Needs Review"
-        grade = "C"
-        color = "orange"
-    else:
-        category = "High Risk / Non-Compliant"
+    if fail_count > 0:
+        category = "Non-Compliant"
         grade = "D"
         color = "red"
+    elif review_count > 0 or len(missing_fields) > 0:
+        category = "Needs Review"
+        grade = "B"
+        color = "orange"
+    else:
+        category = "Compliant"
+        grade = "A"
+        color = "green"
 
     return {
-        "score": final_score,
+        "score": score,
         "max_score": 100,
         "grade": grade,
         "category": category,
         "color": color,
-        "declarations_found": len(present_fields),
-        "declarations_total": len(mandatory_fields),
+        "declarations_found": present_count,
+        "declarations_total": total_fields,
         "missing_declarations": missing_fields,
         "violations_count": len(violations),
         "high_severity_count": fail_count,
@@ -461,13 +452,13 @@ def create_scan(
     # Use accurate rule engine score
     compliance_score_data["score"] = compliance_score_num
     if verdict_str == "compliant":
-        compliance_score_data["category"] = "Excellent / Compliant"
+        compliance_score_data["category"] = "Compliant"
         compliance_score_data["color"] = "green"
     elif verdict_str == "needs_review":
         compliance_score_data["category"] = "Needs Review"
-        compliance_score_data["color"] = "orange"
+        compliance_score_data["color"] = "amber"
     else:
-        compliance_score_data["category"] = "High Risk / Non-Compliant"
+        compliance_score_data["category"] = "Non-Compliant"
         compliance_score_data["color"] = "red"
 
     field_confidences_data = compute_field_confidences(extracted_fields, fusion_fields)
