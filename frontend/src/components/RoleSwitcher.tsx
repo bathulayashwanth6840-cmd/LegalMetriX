@@ -108,10 +108,8 @@ export default function RoleSwitcher({ align = 'left', className = '', variant =
         aria-label={`Current Role: ${roleLabel}. Click to switch demo role`}
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDownTrigger}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-2xs cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-          variant === 'sidebar'
-            ? 'bg-blue-950/80 hover:bg-blue-900 border border-blue-700/60 text-white'
-            : 'bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-slate-700 text-slate-800 dark:text-slate-100'
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-2xs cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-slate-700 text-slate-800 dark:text-slate-100 ${
+          variant === 'sidebar' ? 'w-full justify-between' : ''
         }`}
       >
         <div className="flex items-center gap-1.5">
