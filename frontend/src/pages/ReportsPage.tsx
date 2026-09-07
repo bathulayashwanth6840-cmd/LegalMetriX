@@ -7,6 +7,7 @@ import {
 import { getStoredComplaints } from '../services/complaintService';
 import type { ComplaintRecord } from '../types/complaint';
 import { evaluateCanonicalCompliance } from '../utils/complianceEngine';
+import { generateComplaintAssessmentPDF, generateInspectionReportPDF } from '../utils/pdfGenerator';
 
 export default function ReportsPage() {
   const [scans, setScans] = useState<any[]>([]);
@@ -14,7 +15,7 @@ export default function ReportsPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'ALL' | 'COMPLAINTS' | 'INSPECTIONS'>('ALL');
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
 
   useEffect(() => {
     fetchRecords();
@@ -51,25 +52,14 @@ export default function ReportsPage() {
     );
   });
 
-  const downloadReportForScan = async (scanId: number | string) => {
-    try {
-      const response = await fetch(`${apiUrl}/api/scans/${scanId}/report`);
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `LegalMetriX_Assessment_Report_${scanId}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      } else {
-        alert('Standard assessment report opening in preview view...');
-        window.open(`/scan/${scanId}`, '_blank');
-      }
-    } catch (e) {
-      window.open(`/scan/${scanId}`, '_blank');
+  const handleDownloadComplaintPDF = (c: ComplaintRecord) => {
+    generateComplaintAssessmentPDF(c);
+  };
+
+  const handleDownloadScanPDF = async (scan: any) => {
+    if (scan) {
+      generateInspectionReportPDF(scan);
+      return;
     }
   };
 
@@ -205,8 +195,9 @@ export default function ReportsPage() {
                   <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
                     <button
                       type="button"
-                      onClick={() => downloadReportForScan(c.inspectionId)}
+                      onClick={() => handleDownloadComplaintPDF(c)}
                       className="py-2 px-3 bg-[var(--color-navy)] hover:bg-blue-900 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                      title="Download Certified Assessment PDF"
                     >
                       <Download size={13} /> Assessment PDF
                     </button>
@@ -295,15 +286,14 @@ export default function ReportsPage() {
                         >
                           <Eye size={13} /> View Dossier
                         </Link>
-                        <a
-                          href={`${apiUrl}/api/scans/${s.id}/report`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-colors shadow-2xs"
-                          title="Download PDF"
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadScanPDF(s)}
+                          className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-colors shadow-2xs cursor-pointer"
+                          title="Download Certified PDF Report"
                         >
                           <Download size={13} /> PDF
-                        </a>
+                        </button>
                       </div>
                     </div>
                   );

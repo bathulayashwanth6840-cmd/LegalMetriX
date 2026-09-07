@@ -9,6 +9,7 @@ import {
 import { createComplaintRecord } from '../services/complaintService';
 import { resolveImageUrl, handleImageError } from '../utils/imageUtils';
 import { evaluateCanonicalCompliance } from '../utils/complianceEngine';
+import { generateInspectionReportPDF } from '../utils/pdfGenerator';
 
 const METROLOGY_FIELDS = [
   // Legal Metrology Act & Rules 2011 (LMR)
@@ -214,7 +215,11 @@ export default function ScanDetail() {
   const [createdComplaintId, setCreatedComplaintId] = useState<string | null>(null);
 
   const downloadReport = () => {
-    window.open(`${apiUrl}/api/scans/${id}/report`, '_blank');
+    if (scan) {
+      generateInspectionReportPDF(scan);
+    } else {
+      window.open(`${apiUrl}/api/scans/${id}/report`, '_blank');
+    }
   };
 
   const handleCreateComplaint = (prodName: string, failedList: any[], resolvedMap: Record<string, string>) => {

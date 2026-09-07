@@ -17,6 +17,7 @@ import ForwardModal from '../components/ForwardModal';
 import VerificationModal from '../components/VerificationModal';
 import EvidenceModal from '../components/EvidenceModal';
 import { resolveImageUrl, handleImageError } from '../utils/imageUtils';
+import { generateComplaintAssessmentPDF } from '../utils/pdfGenerator';
 
 const STATUS_BADGES: Record<
   ComplaintStatus,
@@ -177,6 +178,16 @@ export default function ComplaintDetailPage() {
                   <span className="font-black text-xs block">{st.label}</span>
                 </div>
               </div>
+
+              <button
+                type="button"
+                onClick={() => generateComplaintAssessmentPDF(complaint)}
+                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs rounded-xl shadow-md border border-white/20 flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Download Certified Assessment PDF"
+              >
+                <Download size={14} />
+                <span>Assessment PDF</span>
+              </button>
 
               <button
                 type="button"

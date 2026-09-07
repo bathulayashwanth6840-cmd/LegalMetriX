@@ -20,6 +20,7 @@ import { savePendingScan, syncPendingScans } from '../utils/offlineQueue';
 import type { PendingScan } from '../utils/offlineQueue';
 import type { Extracted360Result, SurfaceCoverageInfo } from '../utils/video360Processor';
 import { evaluateCanonicalCompliance } from '../utils/complianceEngine';
+import { generateInspectionReportPDF } from '../utils/pdfGenerator';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type WizardStep = 'UPLOAD' | 'EXTRACT' | 'REVIEW' | 'COMPLIANCE';
@@ -820,8 +821,11 @@ export default function ScanPage() {
   };
 
   const downloadPDFReport = () => {
-    if (!scanResult?.id) return;
-    window.open(`${apiUrl}/api/scans/${scanResult.id}/report`, '_blank');
+    if (scanResult) {
+      generateInspectionReportPDF(scanResult);
+    } else if (scanResult?.id) {
+      window.open(`${apiUrl}/api/scans/${scanResult.id}/report`, '_blank');
+    }
   };
 
   const startOver = () => {
