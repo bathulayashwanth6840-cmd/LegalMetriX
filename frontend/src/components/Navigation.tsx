@@ -191,15 +191,15 @@ export default function Navigation() {
 
   return (
     <>
-      {/* ── Desktop Sidebar with Soft Neutral Background ──────────────────── */}
+      {/* ── Desktop Sidebar ──────────────────────────────────────────────── */}
       <aside
         aria-label="Sidebar Navigation"
-        className="hidden sm:flex flex-col w-64 bg-[#F8F9FA] dark:bg-[#0D1526] text-slate-800 dark:text-slate-100 min-h-screen flex-shrink-0 border-r border-slate-200/90 dark:border-slate-800/90 select-none transition-colors"
+        className="hidden sm:flex flex-col w-64 bg-slate-900 dark:bg-slate-950 text-white min-h-screen flex-shrink-0 shadow-lg border-r border-slate-800/80 select-none"
       >
         {/* Header / Logo */}
-        <div className="p-4 border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-2">
+        <div className="p-4 border-b border-slate-800/80 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white flex-shrink-0 shadow-2xs flex items-center justify-center">
+            <div className="w-9 h-9 rounded-2xl overflow-hidden border border-slate-700 bg-white flex-shrink-0 shadow-sm flex items-center justify-center">
               <img
                 src="/legal_metrology_logo.jpg"
                 alt="Government of India Legal Metrology Logo"
@@ -208,11 +208,11 @@ export default function Navigation() {
                   (e.target as HTMLElement).style.display = 'none';
                 }}
               />
-              <ShieldCheck size={20} className="text-blue-700 dark:text-blue-400" aria-hidden="true" />
+              <ShieldCheck size={22} className="text-blue-900" aria-hidden="true" />
             </div>
             <div>
-              <span className="tracking-tight text-slate-900 dark:text-white block font-black text-base leading-tight">LegalMetriX</span>
-              <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold tracking-wider uppercase block">
+              <span className="tracking-wide text-white block font-black text-base leading-tight">LegalMetriX</span>
+              <span className="text-[9px] text-blue-300 font-bold tracking-wider uppercase block">
                 Enforcement Portal
               </span>
             </div>
@@ -220,33 +220,33 @@ export default function Navigation() {
         </div>
 
         {/* Live Role Persona in Sidebar */}
-        <div className="px-3.5 py-2.5 bg-slate-100/70 dark:bg-slate-900/60 border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between">
+        <div className="px-3.5 py-2.5 bg-slate-950/60 border-b border-slate-800/80 flex items-center justify-between">
           <RoleSwitcher align="left" variant="sidebar" />
-          <span className="text-[9px] bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800/60 flex items-center gap-1">
-            <Sparkles size={10} className="text-amber-600" />
+          <span className="text-[9px] bg-amber-400/20 text-amber-300 font-bold px-1.5 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
+            <Sparkles size={10} />
             <span>Demo</span>
           </span>
         </div>
 
         {/* Navigation items grouped by sections */}
-        <nav aria-label="Main Navigation Menu" className="flex-1 py-3 overflow-y-auto px-2.5 space-y-3">
+        <nav aria-label="Main Navigation Menu" className="flex-1 py-3 overflow-y-auto px-3">
           {navSections.map((section, idx) => (
             <div
               key={section.title}
-              className={`${idx > 0 ? 'mt-3' : ''} ${
-                section.hasDivider ? 'border-t border-slate-200/80 dark:border-slate-800/80 pt-3 mt-3' : ''
+              className={`${idx > 0 ? 'mt-4' : ''} ${
+                section.hasDivider ? 'border-t border-slate-800/80 pt-3 mt-4' : ''
               }`}
             >
               {/* Section Header */}
               <div
                 id={`nav-sec-${section.title.toLowerCase()}`}
-                className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 select-none pointer-events-none"
+                className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-400 select-none pointer-events-none"
               >
                 {section.title}
               </div>
 
               {/* Section Nav Links */}
-              <ul className="space-y-0.5" aria-labelledby={`nav-sec-${section.title.toLowerCase()}`}>
+              <ul className="space-y-1" aria-labelledby={`nav-sec-${section.title.toLowerCase()}`}>
                 {section.items.map((item) => {
                   const isActive = isItemActive(item.to);
                   return (
@@ -254,24 +254,22 @@ export default function Navigation() {
                       <Link
                         to={item.to}
                         aria-current={isActive ? 'page' : undefined}
-                        className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                        className={`flex items-center justify-between px-3 py-2 rounded-xl font-medium text-xs transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                           isActive
-                            ? 'bg-blue-50/90 dark:bg-slate-800/90 text-blue-900 dark:text-white font-bold border-l-3 border-blue-700 dark:border-blue-400 shadow-2xs'
-                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white border-l-3 border-transparent font-medium'
+                            ? 'bg-blue-600 text-white font-bold shadow-xs'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className={isActive ? 'text-blue-700 dark:text-blue-400' : 'text-slate-400 dark:text-slate-400'}>
-                            {item.icon}
-                          </span>
+                          {item.icon}
                           <span>{item.label}</span>
                         </div>
                         {item.badge && (
                           <span
                             className={`text-[8px] px-1.5 py-0.5 rounded-full uppercase transition-all ${
                               isActive
-                                ? 'bg-amber-100 text-amber-900 font-black border border-amber-300/80'
-                                : 'bg-slate-200/80 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold'
+                                ? 'bg-amber-400 text-slate-950 font-black shadow-2xs'
+                                : 'bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold'
                             }`}
                           >
                             <span className="sr-only">Notification: </span>
@@ -288,19 +286,19 @@ export default function Navigation() {
         </nav>
 
         {/* Demo Mode Subtitle Indicator */}
-        <div className="px-3.5 py-2 bg-slate-100/60 dark:bg-slate-900/60 border-t border-slate-200/80 dark:border-slate-800/80 text-[10px] text-slate-500 dark:text-slate-400 font-mono flex items-center justify-between">
-          <span>Legal Metrology Platform</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <div className="px-3.5 py-2 bg-slate-950/60 border-t border-slate-800/80 text-[10px] text-slate-400 font-mono flex items-center justify-between">
+          <span>Demo Mode — SIH 2024</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
         </div>
 
         {/* Theme Mode Toggle & Logout in Sidebar footer */}
-        <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-900/40 flex items-center justify-between">
+        <div className="p-3 border-t border-slate-800/80 bg-slate-950/40 flex items-center justify-between">
           <ThemeToggle />
           <button
             type="button"
             onClick={handleLogout}
             title="Logout of Demo Session"
-            className="p-2 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold"
+            className="p-2 text-rose-400 hover:text-white hover:bg-rose-950/60 rounded-xl transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold"
           >
             <LogOut size={14} />
             <span className="text-[10px]">Logout</span>
@@ -308,15 +306,15 @@ export default function Navigation() {
         </div>
 
         {/* Language Selector Section */}
-        <div className="p-3.5 border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-900/50">
-          <div className="flex items-center gap-2 mb-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
+        <div className="p-3.5 border-t border-slate-800/80 bg-slate-950/50">
+          <div className="flex items-center gap-2 mb-1.5 text-xs font-semibold text-slate-300">
             <Globe size={13} aria-hidden="true" />
             <span>Language / भाषा / భాష</span>
           </div>
           <div
             role="group"
             aria-label="Language selection"
-            className="grid grid-cols-3 gap-1 bg-slate-200/70 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700"
+            className="grid grid-cols-3 gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800"
           >
             {languages.map((lang) => (
               <button
@@ -325,10 +323,10 @@ export default function Navigation() {
                 onClick={() => setLanguage(lang.code)}
                 aria-pressed={language === lang.code}
                 aria-label={`Change language to ${lang.label}`}
-                className={`py-1 px-1 rounded-lg text-xs font-medium transition-all text-center flex flex-col items-center gap-0.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                className={`py-1 px-1 rounded-lg text-xs font-medium transition-all text-center flex flex-col items-center gap-0.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                   language === lang.code
-                    ? 'bg-white dark:bg-slate-900 text-blue-900 dark:text-white font-bold shadow-2xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-blue-600 text-white font-bold shadow-xs'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
                 title={lang.label}
               >
@@ -341,11 +339,11 @@ export default function Navigation() {
       </aside>
 
       {/* ── Mobile Top Role Switcher Bar ─────────────────────────────────── */}
-      <header className="sm:hidden bg-[#F8F9FA] dark:bg-[#0D1526] px-4 py-2.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between text-slate-900 dark:text-white">
+      <header className="sm:hidden bg-slate-900 dark:bg-slate-950 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between text-white">
         <div className="flex items-center gap-2">
-          <ShieldCheck size={18} className="text-blue-700 dark:text-blue-400" aria-hidden="true" />
+          <ShieldCheck size={18} className="text-amber-400" aria-hidden="true" />
           <span className="font-bold text-xs">LegalMetriX</span>
-          <span className="text-[8px] bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold px-1.5 py-0.2 rounded-full">Demo</span>
+          <span className="text-[8px] bg-amber-400/20 text-amber-300 font-bold px-1.5 py-0.2 rounded-full">Demo</span>
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle compact />
@@ -366,8 +364,8 @@ export default function Navigation() {
                 key={item.to}
                 to={item.to}
                 aria-current={active ? 'page' : undefined}
-                className={`flex flex-col items-center py-2 px-1 w-full text-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-                  active ? 'text-blue-700 dark:text-blue-400 font-bold' : 'text-slate-400 dark:text-slate-500 font-normal'
+                className={`flex flex-col items-center py-2 px-1 w-full text-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+                  active ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-400 dark:text-slate-500 font-normal'
                 }`}
               >
                 {item.icon}
