@@ -13,18 +13,18 @@
 
 :root {
   color-scheme: light;
-  --canvas-bg: #F6F8FA;
+  --canvas-bg: #F5F6F8;
   --card-bg: #FFFFFF;
-  --card-border: rgba(226, 232, 240, 0.85);
-  --card-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  --card-border: rgba(226, 232, 240, 0.9);
+  --card-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
 }
 
 html.dark {
   color-scheme: dark;
-  --canvas-bg: #090E1A;
+  --canvas-bg: #0B1120;
   --card-bg: #111C33;
   --card-border: rgba(30, 46, 74, 0.85);
-  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 body {
