@@ -141,16 +141,16 @@ export default function HomePage() {
   const recentScans = scans.slice(0, 5);
 
   return (
-    <div className="flex flex-col min-h-full select-none pb-24 sm:pb-12 bg-slate-50">
-      {/* ── Top Hero Banner with SIH Theme ──────────────────────────────── */}
-      <div className="bg-[var(--color-navy)] text-white pt-8 pb-12 px-4 sm:px-8 shadow-md">
+    <div className="flex flex-col min-h-full select-none pb-24 sm:pb-12 bg-[#F6F8FA] dark:bg-[#090E1A] transition-colors">
+      {/* ── Top Hero Banner with Soft Public-Service Aesthetic ──────────── */}
+      <div className="bg-slate-900 dark:bg-slate-950 text-white pt-8 pb-12 px-4 sm:px-8 border-b border-slate-800/80 shadow-2xs">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div>
-              <div className={`inline-flex items-center gap-2 border px-3 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase mb-3 ${
+              <div className={`inline-flex items-center gap-2 border px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase mb-3 ${
                 isCitizen
-                  ? 'bg-emerald-950/70 border-emerald-400/60 text-emerald-300'
-                  : 'bg-blue-900/60 border-blue-700/60 text-blue-300'
+                  ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
+                  : 'bg-blue-950/60 border-blue-500/40 text-blue-300'
               }`}>
                 <Sparkles size={12} className={isCitizen ? 'text-emerald-400' : 'text-amber-400'} />
                 <span>
@@ -166,7 +166,7 @@ export default function HomePage() {
                   ? 'Central Metrology Directorate & Compliance Dashboard'
                   : 'Enforcement Officer Packaging Inspection Dashboard'}
               </h1>
-              <p className="text-xs sm:text-sm text-blue-200 mt-2 max-w-2xl leading-relaxed font-medium">
+              <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-400 mt-2 max-w-2xl leading-relaxed font-medium">
                 {isCitizen
                   ? 'Scan a packaged product to check its declared information with AI. Instant public access — no username or password required.'
                   : isAdmin
@@ -181,26 +181,26 @@ export default function HomePage() {
                 <>
                   <Link
                     to="/citizen/scan"
-                    className="px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-sm rounded-2xl shadow-xl shadow-blue-500/25 flex items-center gap-2.5 transition-all active:scale-[0.98]"
+                    className="px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm rounded-full shadow-md shadow-blue-500/20 flex items-center gap-2.5 transition-all active:scale-[0.98]"
                   >
-                    <Camera size={20} />
+                    <Camera size={18} />
                     <span>Scan Product</span>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={15} />
                   </Link>
 
                   <Link
                     to="/citizen/manual-entry"
-                    className="px-5 py-4 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-2 transition-all active:scale-[0.98]"
+                    className="px-5 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-full border border-white/20 flex items-center gap-2 transition-all active:scale-[0.98]"
                   >
-                    <Edit3 size={16} />
+                    <Edit3 size={15} />
                     <span>Enter Details Manually</span>
                   </Link>
 
                   <Link
                     to="/complaints"
-                    className="px-4 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-1.5 transition-all"
+                    className="px-4 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-full border border-white/20 flex items-center gap-1.5 transition-all"
                   >
-                    <FileWarning size={15} />
+                    <FileWarning size={14} />
                     <span>My Complaints</span>
                   </Link>
                 </>
@@ -208,7 +208,7 @@ export default function HomePage() {
                 <>
                   <Link
                     to="/scan"
-                    className="px-5 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-gray-950 font-black text-xs rounded-2xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition-all active:scale-[0.98]"
+                    className="px-5 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-full shadow-md flex items-center gap-2 transition-all active:scale-[0.98]"
                   >
                     <Camera size={16} />
                     <span>New Inspection</span>
@@ -217,7 +217,7 @@ export default function HomePage() {
 
                   <Link
                     to="/scan?mode=video360"
-                    className="px-5 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs rounded-2xl shadow-lg flex items-center gap-2 transition-all active:scale-[0.98]"
+                    className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-full shadow-md flex items-center gap-2 transition-all active:scale-[0.98]"
                   >
                     <Video size={16} />
                     <span>360° Video Scan</span>
@@ -225,9 +225,9 @@ export default function HomePage() {
 
                   <Link
                     to="/history"
-                    className="px-4 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-1.5 transition-all"
+                    className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-full border border-white/20 flex items-center gap-1.5 transition-all"
                   >
-                    <HistoryIcon size={15} />
+                    <HistoryIcon size={14} />
                     <span>History</span>
                   </Link>
                 </>
@@ -235,7 +235,7 @@ export default function HomePage() {
                 <>
                   <Link
                     to="/scan"
-                    className="px-5 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-gray-950 font-black text-xs rounded-2xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition-all active:scale-[0.98]"
+                    className="px-5 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-full shadow-md flex items-center gap-2 transition-all active:scale-[0.98]"
                   >
                     <Camera size={16} />
                     <span>New Inspection</span>
@@ -244,7 +244,7 @@ export default function HomePage() {
 
                   <Link
                     to="/analytics"
-                    className="px-5 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black text-xs rounded-2xl shadow-lg flex items-center gap-2 transition-all active:scale-[0.98]"
+                    className="px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-full shadow-md flex items-center gap-2 transition-all active:scale-[0.98]"
                   >
                     <TrendingUp size={16} />
                     <span>Compliance Analytics</span>
@@ -252,9 +252,9 @@ export default function HomePage() {
 
                   <Link
                     to="/complaints"
-                    className="px-4 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-1.5 transition-all"
+                    className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-full border border-white/20 flex items-center gap-1.5 transition-all"
                   >
-                    <FileWarning size={15} />
+                    <FileWarning size={14} />
                     <span>Complaints</span>
                   </Link>
                 </>
@@ -263,10 +263,10 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={fetchScansAndComplaints}
-                className="p-3.5 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all cursor-pointer"
+                className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full border border-white/20 transition-all cursor-pointer"
                 title="Refresh Live Metrics"
               >
-                <RefreshCw size={16} className={loading ? 'animate-spin' : ''} />
+                <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
               </button>
             </div>
           </div>

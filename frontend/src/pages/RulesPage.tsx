@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, ChevronDown, ChevronUp, AlertCircle, CheckSquare, ArrowRight, ShieldAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useRole } from '../context/RoleContext';
 
 interface RuleItem {
   id: number;
@@ -58,74 +59,58 @@ const SAMPLE_RULES: RuleItem[] = [
       "Verify the price digits are clear and not overwritten or stickered over."
     ],
     violationExamples: [
-      "Sticker pasted over pre-printed MRP to inflate the retail price.",
-      "Price printed without mentioning that it is inclusive of all taxes."
+      "Sticker pasted over original MRP increasing the price.",
+      "Absence of 'inclusive of all taxes' phrase."
     ],
-    checkCriteria: "Single price declaration. Retail price stickers are illegal unless authorized by the metrology department."
+    checkCriteria: "Must include currency symbol/name and clear indication that all statutory taxes are included."
   },
   {
     id: 4,
-    ruleCode: "Rule 6(1)(a)",
-    title: "Manufacturer / Packer / Importer Details",
+    ruleCode: "Rule 6(1)(c)",
+    title: "Name & Address of Manufacturer / Packer",
     category: "Manufacturer/Importer Details",
-    explanation: "Every package must bear the name and complete address of the manufacturer, packer, or importer.",
+    explanation: "The name and complete address of the manufacturer or packer must be clearly declared.",
     verificationGuidelines: [
-      "Verify that the complete street address, city, state, and pin code are present.",
-      "For imported goods, verify both foreign manufacturer and Indian importer details are declared."
+      "Verify complete address including premises number, street, city, state, and pin code.",
+      "If imported, verify name and address of the importer as well as country of origin."
     ],
     violationExamples: [
-      "Only declaring 'Marketed by' address without the manufacturer's details.",
-      "Providing a PO Box number instead of a physical address."
+      "Only city name provided without postal address or PIN code.",
+      "Missing importer identification on foreign goods."
     ],
-    checkCriteria: "Full physical location must be listed. Standard corporate address checks apply."
+    checkCriteria: "Complete physical address enabling physical inspection and consumer correspondence."
   },
   {
     id: 5,
-    ruleCode: "Rule 6(1)(e)",
-    title: "Date of Manufacture / Packing / Import",
+    ruleCode: "Rule 6(1)(d)",
+    title: "Month & Year of Manufacture / Packaging",
     category: "Date/Month/Year Information",
-    explanation: "The month and year in which the commodity is manufactured, packed, or imported must be declared.",
+    explanation: "Month and year in which the commodity is manufactured or pre-packed must be clearly indicated.",
     verificationGuidelines: [
-      "Verify the format is readable (e.g., 'MM/YYYY' or 'Month YYYY').",
-      "Check if the printing is blurred or missing on the bottom of the tin/box."
+      "Check for 'Mfg Date:', 'Packed on:', or 'Date of Pkg:'.",
+      "Ensure format is valid (e.g. MM/YYYY, Month YYYY)."
     ],
     violationExamples: [
-      "Month and year stamped in smudged, unreadable ink.",
-      "Declaration missing entirely from the packaging."
+      "Missing manufacture month/year on perishable commodities.",
+      "Illegible smudged date stamps."
     ],
-    checkCriteria: "Month and Year must be clearly legible. Expiry date, if applicable, should also be displayed."
+    checkCriteria: "Clear month and year declaration with conspicuous font on the package."
   },
   {
     id: 6,
-    ruleCode: "Rule 6(2)",
-    title: "Consumer Care Contact Details",
+    ruleCode: "Rule 6(1)(g)",
+    title: "Consumer Care Helpline & Email",
     category: "Consumer Care Details",
-    explanation: "Every package must declare the name, address, telephone number, and email address of the consumer care cell.",
+    explanation: "Name, address, telephone number, and email of the person or office to be contacted in case of consumer complaints.",
     verificationGuidelines: [
-      "Verify that a dedicated telephone helpline number is listed.",
-      "Verify a working email address is printed.",
-      "Ensure the name of the contact person or designation (e.g. 'Consumer Care Manager') is stated."
+      "Verify presence of toll-free number or helpline.",
+      "Ensure valid email address is clearly visible."
     ],
     violationExamples: [
-      "Providing a telephone number that is missing digits or invalid.",
-      "Missing email address on the consumer care panel."
+      "No email or phone number listed for grievances.",
+      "Invalid or non-functional telephone helpline."
     ],
-    checkCriteria: "All 4 attributes (Name/Designation, Address, Phone, Email) must be present in the consumer panel."
-  },
-  {
-    id: 7,
-    ruleCode: "Rule 12",
-    title: "Declaration of Size of Letters and Numerals",
-    category: "Units and Measurements",
-    explanation: "Letters and numerals in the mandatory declarations must match height specifications relative to the package size.",
-    verificationGuidelines: [
-      "Measure height of net quantity digits using inspection calipers.",
-      "Compare package volume/area with Rule 12 size charts (typically 1mm to 6mm minimum height)."
-    ],
-    violationExamples: [
-      "Net quantity digits printed in 0.8mm height on a large 1kg box (requires 4mm)."
-    ],
-    checkCriteria: "Strict compliance with height charts based on principal display panel size."
+    checkCriteria: "Designated consumer complaint channel with phone/email and contact person/office designation."
   }
 ];
 
@@ -136,11 +121,8 @@ const CATEGORIES = [
   "MRP Declaration",
   "Manufacturer/Importer Details",
   "Consumer Care Details",
-  "Date/Month/Year Information",
-  "Units and Measurements"
+  "Date/Month/Year Information"
 ];
-
-import { useRole } from '../context/RoleContext';
 
 export default function RulesPage() {
   const { isCitizen } = useRole();
@@ -162,101 +144,90 @@ export default function RulesPage() {
   });
 
   return (
-    <div className="p-4 sm:p-6 pb-20 max-w-5xl mx-auto flex flex-col gap-6">
+    <div className="p-4 sm:p-8 pb-24 max-w-5xl mx-auto flex flex-col gap-6 select-none bg-[#F6F8FA] dark:bg-[#090E1A] min-h-full transition-colors">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            📖 Rules & Guidelines
-          </h2>
-          <p className="text-gray-500 text-sm">Reference handbook for Legal Metrology (Packaged Commodities) Rules, 2011</p>
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+            <span>📖</span>
+            <span>Rules & Guidelines</span>
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-medium">
+            Reference handbook for Legal Metrology (Packaged Commodities) Rules, 2011
+          </p>
         </div>
       </div>
 
       {/* Official Status Warning Banner */}
-      <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl flex items-start gap-3">
-        <ShieldAlert className="text-amber-600 flex-shrink-0 mt-0.5" size={20} />
+      <div className="theme-card p-4 bg-amber-50/70 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900/60 flex items-start gap-3">
+        <ShieldAlert className="text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" size={20} />
         <div>
-          <h4 className="font-bold text-amber-800 text-sm">Sample / Reference Content Only</h4>
-          <p className="text-amber-700 text-xs mt-1">
-            The rules and sections displayed below are mock records representing the Legal Metrology framework for portal demonstration. Verify with the official gazette or state metrology controller before issuing fines or violation notices.
+          <h4 className="font-bold text-amber-900 dark:text-amber-300 text-xs sm:text-sm">Sample / Reference Content Only</h4>
+          <p className="text-amber-800 dark:text-amber-400 text-xs mt-0.5 leading-relaxed font-medium">
+            The rules and sections displayed below represent the Legal Metrology statutory framework. Verify with the official gazette before issuing formal statutory notices.
           </p>
         </div>
       </div>
 
       {/* Quick Reference Checklist */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      <div className="theme-card overflow-hidden">
         <button 
           onClick={() => setIsChecklistOpen(!isChecklistOpen)}
-          className="w-full px-5 py-4 bg-gray-50 flex items-center justify-between border-b border-gray-150 hover:bg-gray-100 transition-colors"
+          className="w-full px-5 py-4 bg-slate-50/80 dark:bg-slate-800/80 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
         >
-          <div className="flex items-center gap-2 font-bold text-gray-800 text-sm">
-            <CheckSquare className="text-blue-600" size={18} />
+          <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
+            <CheckSquare className="text-blue-600 dark:text-blue-400" size={18} />
             <span>Field Inspection Checklist (Standard Declarations)</span>
           </div>
-          {isChecklistOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
+          {isChecklistOpen ? <ChevronUp size={18} className="text-slate-400" /> : <ChevronDown size={18} className="text-slate-400" />}
         </button>
         
         {isChecklistOpen && (
-          <div className="p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 bg-white">
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Manufacturer/Packer/Importer details
+          <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-[10px]">1</span>
+              <span className="font-semibold text-slate-800 dark:text-slate-200">Common or generic commodity name</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Common name of the product
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-[10px]">2</span>
+              <span className="font-semibold text-slate-800 dark:text-slate-200">Net quantity in standard SI units</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Net quantity in standard SI units
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-[10px]">3</span>
+              <span className="font-semibold text-slate-800 dark:text-slate-200">MRP with tax inclusion statement</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> MRP (incl. of all taxes)
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Month & Year of packing/import
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Consumer care name, email, phone & address
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Required units and decimal placements
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Digit height relative to package volume
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-emerald-500 font-bold">✓</span> Country of origin (for imports)
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700">
+              <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-[10px]">4</span>
+              <span className="font-semibold text-slate-800 dark:text-slate-200">Complete name and physical address</span>
             </div>
           </div>
         )}
       </div>
 
-      {/* Toolbar: Search and Category Tabs */}
-      <div className="flex flex-col gap-4">
-        {/* Search */}
-        <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 text-gray-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search by rule number, declaration, keyword..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-[var(--color-navy)] focus:outline-none text-sm"
-            />
-          </div>
+      {/* Search & Categories */}
+      <div className="theme-card p-4 space-y-3">
+        <div className="relative">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search rules by code, title, or keywords..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+          />
         </div>
 
         {/* Categories Bar */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        <div className="flex gap-1.5 overflow-x-auto pb-1">
           {CATEGORIES.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap border transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 selectedCategory === cat 
-                  ? 'bg-[var(--color-navy)] text-white border-[var(--color-navy)]' 
-                  : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                  ? 'bg-blue-600 text-white shadow-2xs' 
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
               }`}
             >
               {cat}
@@ -266,21 +237,21 @@ export default function RulesPage() {
       </div>
 
       {/* Rule Cards Grid */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         {filteredRules.map(rule => (
           <div 
             key={rule.id}
-            className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow"
+            className="theme-card overflow-hidden flex flex-col hover:border-slate-300 dark:hover:border-slate-700 transition-all shadow-xs"
           >
             {/* Title Block */}
-            <div className="px-5 py-4 border-b border-gray-150 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
               <div>
-                <span className="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded text-[10px] font-bold uppercase tracking-wide">
+                <span className="inline-block px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 rounded-full text-[10px] font-black uppercase tracking-wide">
                   {rule.ruleCode}
                 </span>
-                <h3 className="font-bold text-gray-800 text-base mt-1">{rule.title}</h3>
+                <h3 className="font-bold text-slate-900 dark:text-white text-base mt-1">{rule.title}</h3>
               </div>
-              <span className="text-[10px] bg-slate-200 text-slate-700 font-bold px-2 py-1 rounded">
+              <span className="text-[10px] bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold px-2.5 py-1 rounded-full">
                 {rule.category}
               </span>
             </div>
@@ -288,17 +259,17 @@ export default function RulesPage() {
             {/* Content Details */}
             <div className="p-5 flex flex-col gap-4">
               <div>
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Rule Explanation</h4>
-                <p className="text-sm text-gray-600 mt-1">{rule.explanation}</p>
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Rule Explanation</h4>
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1 leading-relaxed font-medium">{rule.explanation}</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {/* Guidelines */}
-                <div className="bg-slate-50 p-4 rounded-lg border border-gray-150">
-                  <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5">
+                <div className="bg-blue-50/50 dark:bg-slate-800/60 p-4 rounded-2xl border border-blue-100 dark:border-slate-700">
+                  <h4 className="text-xs font-bold text-blue-800 dark:text-blue-300 uppercase tracking-wider flex items-center gap-1.5">
                     🔍 Field Verification Guidelines
                   </h4>
-                  <ul className="list-disc pl-4 mt-2 text-xs text-gray-600 flex flex-col gap-1.5">
+                  <ul className="list-disc pl-4 mt-2 text-xs text-slate-600 dark:text-slate-400 flex flex-col gap-1.5">
                     {rule.verificationGuidelines.map((guideline, idx) => (
                       <li key={idx}>{guideline}</li>
                     ))}
@@ -306,11 +277,11 @@ export default function RulesPage() {
                 </div>
 
                 {/* Common Violations */}
-                <div className="bg-red-50/40 p-4 rounded-lg border border-red-100">
-                  <h4 className="text-xs font-bold text-red-700 uppercase tracking-wider flex items-center gap-1.5">
+                <div className="bg-rose-50/40 dark:bg-rose-950/30 p-4 rounded-2xl border border-rose-100 dark:border-rose-900/40">
+                  <h4 className="text-xs font-bold text-rose-800 dark:text-rose-300 uppercase tracking-wider flex items-center gap-1.5">
                     <AlertCircle size={14} /> Common Violations
                   </h4>
-                  <ul className="list-disc pl-4 mt-2 text-xs text-red-700 flex flex-col gap-1.5">
+                  <ul className="list-disc pl-4 mt-2 text-xs text-rose-700 dark:text-rose-400 flex flex-col gap-1.5">
                     {rule.violationExamples.map((violation, idx) => (
                       <li key={idx}>{violation}</li>
                     ))}
@@ -319,21 +290,21 @@ export default function RulesPage() {
               </div>
 
               {/* Compliance Status Checks */}
-              <div className="border-t pt-4">
-                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Compliance Criteria</h4>
-                <p className="text-xs text-gray-500 mt-1 font-medium bg-emerald-50 text-emerald-800 border border-emerald-100 px-3 py-2 rounded-lg">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-3">
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Compliance Criteria</h4>
+                <p className="text-xs font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-3 py-2 rounded-xl mt-1">
                   {rule.checkCriteria}
                 </p>
               </div>
             </div>
 
             {/* Inspection / Citizen Scan Trigger Button */}
-            <div className="px-5 py-3.5 bg-gray-50 border-t border-gray-150 flex justify-end">
+            <div className="px-5 py-3.5 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end">
               <button
                 onClick={() => navigate(isCitizen ? '/citizen/scan' : '/scan')}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
               >
-                <span>{isCitizen ? 'Scan Product with This Rule' : 'Use This Rule During Inspection'}</span>
+                <span>{isCitizen ? 'Scan Product with This Rule' : 'Use During Inspection'}</span>
                 <ArrowRight size={14} />
               </button>
             </div>
@@ -341,7 +312,7 @@ export default function RulesPage() {
         ))}
 
         {filteredRules.length === 0 && (
-          <div className="text-center py-10 bg-white border border-gray-100 rounded-xl text-gray-400">
+          <div className="text-center py-10 theme-card text-slate-400 text-xs">
             No rules found matching your filters.
           </div>
         )}

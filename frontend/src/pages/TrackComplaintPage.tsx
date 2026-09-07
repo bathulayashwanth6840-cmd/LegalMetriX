@@ -82,11 +82,11 @@ export default function TrackComplaintPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full select-none pb-24 sm:pb-12 bg-slate-50">
+    <div className="flex flex-col min-h-full select-none pb-24 sm:pb-12 bg-[#F6F8FA] dark:bg-[#090E1A] transition-colors">
       {/* ── Top Header Banner ──────────────────────────────────────────────── */}
-      <div className="bg-[var(--color-navy)] text-white pt-8 pb-14 px-4 sm:px-8 shadow-md">
+      <div className="bg-slate-900 dark:bg-slate-950 text-white pt-8 pb-12 px-4 sm:px-8 border-b border-slate-800/80 shadow-2xs">
         <div className="max-w-4xl mx-auto text-center space-y-3">
-          <div className="inline-flex items-center gap-2 bg-blue-900/60 border border-blue-700/60 px-3.5 py-1 rounded-full text-[10px] font-extrabold tracking-widest text-blue-300 uppercase">
+          <div className="inline-flex items-center gap-2 bg-blue-950/80 border border-blue-500/40 px-3.5 py-1 rounded-full text-[10px] font-black tracking-widest text-blue-300 uppercase">
             <ShieldCheck size={14} className="text-amber-400" aria-hidden="true" />
             <span>NATIONAL LEGAL METROLOGY CONSUMER GRIEVANCE TRACKER</span>
           </div>
@@ -94,7 +94,7 @@ export default function TrackComplaintPage() {
           <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
             Track Complaint & Enquiry Status
           </h1>
-          <p className="text-xs sm:text-sm text-blue-200 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="text-xs sm:text-sm text-slate-300 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-medium">
             Enter your Legal Metrology Complaint ID to check real-time statutory investigation, zonal authority status, and resolution progress.
           </p>
 
@@ -105,27 +105,27 @@ export default function TrackComplaintPage() {
                 e.preventDefault();
                 handleSearch();
               }}
-              className="flex flex-col sm:flex-row items-center gap-2 bg-white/10 p-2 rounded-2xl border border-white/20 backdrop-blur-xs"
+              className="flex flex-col sm:flex-row items-center gap-2 bg-white/10 p-2 rounded-full border border-white/20 backdrop-blur-xs"
             >
               <div className="relative flex-1 w-full">
                 <label htmlFor="complaint-id-search-input" className="sr-only">
                   Enter Legal Metrology Complaint ID (e.g. LM-2026-XXXXXX)
                 </label>
-                <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
                 <input
                   id="complaint-id-search-input"
                   type="text"
-                  placeholder="Enter Complaint ID (e.g. LM-2026-XXXXXX)..."
+                  placeholder="Enter Complaint ID (e.g. CMP-2026-XXXXXX)..."
                   value={complaintIdInput}
                   onChange={(e) => setComplaintIdInput(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-white text-slate-900 placeholder:text-slate-400 font-mono font-bold text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-slate-900 placeholder:text-slate-400 font-mono font-bold text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <button
                 type="submit"
                 aria-label="Track Complaint Status"
-                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs rounded-full shadow-md transition-all active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 Track Status
               </button>

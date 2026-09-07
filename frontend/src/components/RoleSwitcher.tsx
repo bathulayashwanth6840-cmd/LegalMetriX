@@ -8,9 +8,10 @@ import type { UserRole } from '../types/complaint';
 interface RoleSwitcherProps {
   align?: 'left' | 'right';
   className?: string;
+  variant?: 'capsule' | 'sidebar';
 }
 
-export default function RoleSwitcher({ align = 'left', className = '' }: RoleSwitcherProps) {
+export default function RoleSwitcher({ align = 'left', className = '', variant = 'capsule' }: RoleSwitcherProps) {
   const { currentRole, setRole, profile, logout } = useRole();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -40,21 +41,21 @@ export default function RoleSwitcher({ align = 'left', className = '' }: RoleSwi
       label: 'Citizen',
       sublabel: 'Public Consumer / Grievance Portal',
       badge: 'PUBLIC VIEW',
-      icon: <Users size={15} className="text-emerald-400" aria-hidden="true" />,
+      icon: <Users size={15} className="text-emerald-500" aria-hidden="true" />,
     },
     {
       key: 'inspector',
       label: 'Legal Metrology Officer',
       sublabel: 'Field Enforcement Inspector #LM-204',
       badge: 'FIELD OFFICER',
-      icon: <Shield size={15} className="text-blue-400" aria-hidden="true" />,
+      icon: <Shield size={15} className="text-blue-500" aria-hidden="true" />,
     },
     {
       key: 'admin',
       label: 'Administrator',
       sublabel: 'Central Metrology Directorate Admin',
       badge: 'CENTRAL DIRECTORATE',
-      icon: <UserCheck size={15} className="text-amber-400" aria-hidden="true" />,
+      icon: <UserCheck size={15} className="text-amber-500" aria-hidden="true" />,
     },
   ];
 
@@ -107,17 +108,21 @@ export default function RoleSwitcher({ align = 'left', className = '' }: RoleSwi
         aria-label={`Current Role: ${roleLabel}. Click to switch demo role`}
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDownTrigger}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-950/80 hover:bg-blue-900 border border-blue-700/60 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-2xs cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+          variant === 'sidebar'
+            ? 'bg-blue-950/80 hover:bg-blue-900 border border-blue-700/60 text-white'
+            : 'bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-slate-700 text-slate-800 dark:text-slate-100'
+        }`}
       >
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
-          <span className="text-[10px] uppercase tracking-wider font-mono text-blue-200">Role:</span>
-          <span className="font-bold text-white max-w-[130px] truncate">{roleLabel}</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
+          <span className="text-[10px] uppercase tracking-wider font-mono text-slate-400 dark:text-slate-400">Role:</span>
+          <span className="font-bold max-w-[130px] truncate">{roleLabel}</span>
         </div>
         <ChevronDown
-          size={14}
+          size={13}
           aria-hidden="true"
-          className={`text-blue-300 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
+          className={`text-slate-400 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -126,16 +131,16 @@ export default function RoleSwitcher({ align = 'left', className = '' }: RoleSwi
           id="role-switcher-menu"
           role="menu"
           aria-labelledby="role-switcher-button"
-          className={`absolute ${alignmentClasses} mt-2 w-72 max-w-[calc(100vw-2rem)] rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl text-white z-50 p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150`}
+          className={`absolute ${alignmentClasses} mt-2 w-72 max-w-[calc(100vw-2rem)] rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl text-slate-900 dark:text-white z-50 p-2 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150`}
         >
           {/* Header Note */}
-          <div className="px-3 py-2 border-b border-slate-800 flex items-center justify-between">
+          <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 block flex items-center gap-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400 block flex items-center gap-1">
                 <Sparkles size={11} />
                 <span>Demo Persona Switcher</span>
               </span>
-              <span className="text-[11px] text-slate-300 font-medium">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
                 Switch role to test access boundaries.
               </span>
             </div>
@@ -163,22 +168,22 @@ export default function RoleSwitcher({ align = 'left', className = '' }: RoleSwi
                   onKeyDown={(e) => handleKeyDownMenu(e, idx)}
                   className={`w-full text-left p-2.5 rounded-xl text-xs flex items-start gap-3 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
                     isSelected
-                      ? 'bg-blue-600/30 border border-blue-500/60 text-white'
-                      : 'hover:bg-slate-800/80 border border-transparent text-slate-200'
+                      ? 'bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-500/60 text-blue-900 dark:text-white'
+                      : 'hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-transparent text-slate-700 dark:text-slate-200'
                   }`}
                 >
-                  <div className="p-1.5 rounded-lg bg-slate-800 border border-slate-700 mt-0.5" aria-hidden="true">
+                  <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mt-0.5" aria-hidden="true">
                     {r.icon}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1">
-                      <span className="font-bold text-white text-xs">{r.label}</span>
+                      <span className="font-bold text-slate-900 dark:text-white text-xs">{r.label}</span>
                       {isSelected && (
-                        <Check size={14} className="text-emerald-400 flex-shrink-0" aria-hidden="true" />
+                        <Check size={14} className="text-emerald-500 flex-shrink-0" aria-hidden="true" />
                       )}
                     </div>
-                    <span className="text-[11px] text-slate-400 block truncate">{r.sublabel}</span>
-                    <span className="text-[9px] font-mono text-blue-300 uppercase tracking-wider block mt-0.5">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">{r.sublabel}</span>
+                    <span className="text-[9px] font-mono text-blue-600 dark:text-blue-300 uppercase tracking-wider block mt-0.5">
                       {r.badge}
                     </span>
                   </div>
@@ -188,21 +193,21 @@ export default function RoleSwitcher({ align = 'left', className = '' }: RoleSwi
           </div>
 
           {/* Active Profile Summary */}
-          <div className="p-2.5 bg-slate-950/70 rounded-xl border border-slate-800 text-[11px] space-y-0.5">
-            <div className="text-[10px] text-slate-400 font-mono">
-              Active Persona: <span className="text-white font-bold">{profile.name || profile.displayName}</span>
+          <div className="p-2.5 bg-slate-50 dark:bg-slate-950/70 rounded-xl border border-slate-200 dark:border-slate-800 text-[11px] space-y-0.5">
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+              Active Persona: <span className="text-slate-900 dark:text-white font-bold">{profile.name || profile.displayName}</span>
             </div>
-            <div className="text-[10px] text-slate-400 font-mono">
-              Badge: <span className="text-amber-400 font-bold">{profile.badge}</span>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+              Badge: <span className="text-amber-600 dark:text-amber-400 font-bold">{profile.badge}</span>
             </div>
           </div>
 
           {/* Logout Action */}
-          <div className="pt-1 border-t border-slate-800">
+          <div className="pt-1 border-t border-slate-100 dark:border-slate-800">
             <button
               type="button"
               onClick={handleLogout}
-              className="w-full p-2 rounded-xl text-xs text-rose-400 hover:bg-rose-950/50 hover:text-rose-300 flex items-center justify-center gap-2 font-bold transition-colors cursor-pointer"
+              className="w-full p-2 rounded-xl text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/50 flex items-center justify-center gap-2 font-bold transition-colors cursor-pointer"
             >
               <LogOut size={13} />
               <span>Logout Demo Session</span>

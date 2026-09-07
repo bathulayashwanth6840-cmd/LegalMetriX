@@ -3,6 +3,7 @@ import { LanguageProvider } from './i18n/LanguageContext';
 import { RoleProvider } from './context/RoleContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Navigation from './components/Navigation';
+import TopHeader from './components/TopHeader';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import ScanPage from './pages/ScanPage';
@@ -45,6 +46,9 @@ function AppLayout() {
           <div className="flex-1 bg-white"></div>
           <div className="flex-1 bg-[var(--color-green)]"></div>
         </div>
+
+        {/* Global Minimalist Top Header with Capsule Controls */}
+        <TopHeader />
 
         <main id="main-content" className="flex-1 overflow-y-auto focus:outline-none" tabIndex={-1}>
           <Routes>
