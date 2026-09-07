@@ -141,32 +141,32 @@ export default function HomePage() {
   const recentScans = scans.slice(0, 5);
 
   return (
-    <div className="flex flex-col min-h-full select-none pb-24 sm:pb-12 bg-[#F5F6F8] dark:bg-[#0B1120] transition-colors">
-      {/* ── Top Hero Banner with Soft Public-Service Aesthetic ──────────── */}
-      <div className="bg-[#EEF1F4]/80 dark:bg-slate-900/70 text-slate-900 dark:text-white pt-7 pb-10 px-4 sm:px-8 border-b border-slate-200/80 dark:border-slate-800 shadow-2xs">
+    <div className="flex flex-col min-h-full select-none pb-24 sm:pb-12 bg-[#F8F9FA] dark:bg-[#0B1120] transition-colors">
+      {/* ── Top Hero Banner with Clean White Public-Service Aesthetic ──────────── */}
+      <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white pt-7 pb-10 px-4 sm:px-8 border-b border-slate-200 dark:border-slate-800 shadow-xs">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div>
               <div className={`inline-flex items-center gap-2 border px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase mb-2.5 ${
                 isCitizen
-                  ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300'
-                  : 'bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-800/60 text-blue-800 dark:text-blue-300'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300'
+                  : 'bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-800 text-blue-950 dark:text-blue-300'
               }`}>
-                <Sparkles size={12} className={isCitizen ? 'text-emerald-600 dark:text-emerald-400' : 'text-blue-600 dark:text-blue-400'} />
+                <Sparkles size={12} className={isCitizen ? 'text-emerald-700 dark:text-emerald-400' : 'text-blue-700 dark:text-blue-400'} />
                 <span>
                   {isCitizen
                     ? 'CITIZEN PORTAL • OPEN PUBLIC ACCESS (NO LOGIN REQUIRED)'
                     : `SIH 2024 LEGAL METROLOGY AI PLATFORM • ${profile.badge}`}
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                 {isCitizen
                   ? 'Citizen Packaging Consumer Check Portal'
                   : isAdmin
                   ? 'Central Metrology Directorate & Compliance Dashboard'
                   : 'Enforcement Officer Packaging Inspection Dashboard'}
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1.5 max-w-2xl leading-relaxed font-normal">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mt-1.5 max-w-2xl leading-relaxed font-medium">
                 {isCitizen
                   ? 'Scan a packaged product to check its declared information with AI. Instant public access — no username or password required.'
                   : isAdmin
@@ -274,43 +274,43 @@ export default function HomePage() {
           {/* ── 6 Real Analytics Stats Cards (Officer / Admin only) ───────── */}
           {!isCitizen && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-7">
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 block">Total Audits</span>
-                <span className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 block">{stats.total}</span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400">Logged packages</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-slate-600 dark:text-slate-400 block">Total Audits</span>
+                <span className="text-3xl font-black text-slate-900 dark:text-white mt-1 block">{stats.total}</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Logged packages</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-700 dark:text-emerald-400 block">Compliant</span>
-                <span className="text-2xl sm:text-3xl font-bold text-emerald-800 dark:text-emerald-300 mt-1 block">{stats.compliant}</span>
-                <span className="text-[10px] text-emerald-600/90 dark:text-emerald-400/80 font-medium">{stats.passRate}% pass rate</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-emerald-800 dark:text-emerald-400 block">Compliant</span>
+                <span className="text-3xl font-black text-emerald-900 dark:text-emerald-300 mt-1 block">{stats.compliant}</span>
+                <span className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">{stats.passRate}% pass rate</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-amber-700 dark:text-amber-400 block">Needs Review</span>
-                <span className="text-2xl sm:text-3xl font-bold text-amber-800 dark:text-amber-300 mt-1 block">{stats.needsReview}</span>
-                <span className="text-[10px] text-amber-600/90 dark:text-amber-400/80 font-medium">Officer inspection</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-amber-800 dark:text-amber-400 block">Needs Review</span>
+                <span className="text-3xl font-black text-amber-900 dark:text-amber-300 mt-1 block">{stats.needsReview}</span>
+                <span className="text-xs text-amber-700 dark:text-amber-400 font-semibold">Officer inspection</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-rose-700 dark:text-rose-400 block">Non-Compliant</span>
-                <span className="text-2xl sm:text-3xl font-bold text-rose-800 dark:text-rose-300 mt-1 block">{stats.nonCompliant}</span>
-                <span className="text-[10px] text-rose-600/90 dark:text-rose-400/80 font-medium">Statutory breaches</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-rose-800 dark:text-rose-400 block">Non-Compliant</span>
+                <span className="text-3xl font-black text-rose-900 dark:text-rose-300 mt-1 block">{stats.nonCompliant}</span>
+                <span className="text-xs text-rose-700 dark:text-rose-400 font-semibold">Statutory breaches</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 block">Violations</span>
-                <span className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-200 mt-1 block">{stats.totalViolations}</span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400">Defects identified</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-slate-700 dark:text-slate-300 block">Violations</span>
+                <span className="text-3xl font-black text-slate-900 dark:text-white mt-1 block">{stats.totalViolations}</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Defects identified</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-blue-700 dark:text-blue-400 block">Avg Score</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-blue-800 dark:text-blue-400 block">Avg Score</span>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <span className="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-300">{stats.avgScore}</span>
-                  <span className="text-xs text-slate-400 font-medium">/ 100</span>
+                  <span className="text-3xl font-black text-blue-900 dark:text-blue-300">{stats.avgScore}</span>
+                  <span className="text-xs text-slate-500 font-bold">/ 100</span>
                 </div>
-                <span className="text-[10px] text-blue-600/80 dark:text-blue-400/80">Statutory index</span>
+                <span className="text-xs text-blue-700 dark:text-blue-400 font-semibold">Statutory index</span>
               </div>
             </div>
           )}
@@ -318,28 +318,28 @@ export default function HomePage() {
           {/* ── Citizen Summary Counter Cards ─────────────────────────────── */}
           {isCitizen && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-7">
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 block">My Complaints</span>
-                <span className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1 block">{complaintStats.total}</span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400">Registered dockets</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-slate-600 dark:text-slate-400 block">My Complaints</span>
+                <span className="text-3xl font-black text-slate-900 dark:text-white mt-1 block">{complaintStats.total}</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Registered dockets</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-blue-700 dark:text-blue-400 block">Under Review</span>
-                <span className="text-2xl sm:text-3xl font-bold text-blue-800 dark:text-blue-300 mt-1 block">{complaintStats.underReview + complaintStats.submitted}</span>
-                <span className="text-[10px] text-blue-600/80 dark:text-blue-400/80">Queued for review</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-blue-800 dark:text-blue-400 block">Under Review</span>
+                <span className="text-3xl font-black text-blue-900 dark:text-blue-300 mt-1 block">{complaintStats.underReview + complaintStats.submitted}</span>
+                <span className="text-xs text-blue-700 dark:text-blue-400 font-semibold">Queued for review</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-amber-700 dark:text-amber-400 block">In Progress</span>
-                <span className="text-2xl sm:text-3xl font-bold text-amber-800 dark:text-amber-300 mt-1 block">{complaintStats.awaitingVerification + complaintStats.furtherEnquiry}</span>
-                <span className="text-[10px] text-amber-600/80 dark:text-amber-400/80">Field inspection</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-amber-800 dark:text-amber-400 block">In Progress</span>
+                <span className="text-3xl font-black text-amber-900 dark:text-amber-300 mt-1 block">{complaintStats.awaitingVerification + complaintStats.furtherEnquiry}</span>
+                <span className="text-xs text-amber-700 dark:text-amber-400 font-semibold">Field inspection</span>
               </div>
 
-              <div className="bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 sm:p-4 rounded-2xl shadow-2xs">
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-700 dark:text-emerald-400 block">Resolved</span>
-                <span className="text-2xl sm:text-3xl font-bold text-emerald-800 dark:text-emerald-300 mt-1 block">{complaintStats.actionTaken + complaintStats.closed}</span>
-                <span className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80">Action concluded</span>
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-xs">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-emerald-800 dark:text-emerald-400 block">Resolved</span>
+                <span className="text-3xl font-black text-emerald-900 dark:text-emerald-300 mt-1 block">{complaintStats.actionTaken + complaintStats.closed}</span>
+                <span className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold">Action concluded</span>
               </div>
             </div>
           )}
@@ -449,74 +449,74 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
             <Link
               to="/complaints?status=Submitted"
-              className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 hover:bg-slate-100/80 dark:hover:bg-slate-700/60 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-slate-600 dark:text-slate-400 block">1. Submitted</span>
-              <span className="text-xl font-bold text-slate-900 dark:text-white mt-1 block">{complaintStats.submitted}</span>
-              <span className="text-[9px] text-slate-500 dark:text-slate-400">New filings</span>
+              <span className="text-[11px] uppercase font-bold text-slate-700 dark:text-slate-300 block">1. Submitted</span>
+              <span className="text-2xl font-black text-slate-900 dark:text-white mt-1 block">{complaintStats.submitted}</span>
+              <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">New filings</span>
             </Link>
 
             <Link
               to="/complaints?status=Under Review"
-              className="p-3 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/80 dark:border-blue-900/40 hover:bg-blue-100/60 dark:hover:bg-blue-900/30 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-blue-800 dark:text-blue-300 block">2. Review</span>
-              <span className="text-xl font-bold text-blue-950 dark:text-blue-200 mt-1 block">{complaintStats.underReview}</span>
-              <span className="text-[9px] text-blue-600 dark:text-blue-400">AI analysis</span>
+              <span className="text-[11px] uppercase font-bold text-blue-800 dark:text-blue-300 block">2. Review</span>
+              <span className="text-2xl font-black text-blue-900 dark:text-blue-200 mt-1 block">{complaintStats.underReview}</span>
+              <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400">AI analysis</span>
             </Link>
 
             <Link
               to="/complaints?status=Further Enquiry"
-              className="p-3 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/40 hover:bg-amber-100/60 dark:hover:bg-amber-900/30 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-amber-800 dark:text-amber-300 block">3. Enquiry</span>
-              <span className="text-xl font-bold text-amber-950 dark:text-amber-200 mt-1 block">{complaintStats.furtherEnquiry}</span>
-              <span className="text-[9px] text-amber-700 dark:text-amber-400">Zonal audit</span>
+              <span className="text-[11px] uppercase font-bold text-amber-800 dark:text-amber-300 block">3. Enquiry</span>
+              <span className="text-2xl font-black text-amber-900 dark:text-amber-200 mt-1 block">{complaintStats.furtherEnquiry}</span>
+              <span className="text-[10px] font-semibold text-amber-700 dark:text-amber-400">Zonal audit</span>
             </Link>
 
             <Link
               to="/complaints?status=Awaiting Verification"
-              className="p-3 rounded-xl bg-purple-50/50 dark:bg-purple-950/20 border border-purple-200/80 dark:border-purple-900/40 hover:bg-purple-100/60 dark:hover:bg-purple-900/30 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-purple-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-purple-800 dark:text-purple-300 block">4. Awaiting</span>
-              <span className="text-xl font-bold text-purple-950 dark:text-purple-200 mt-1 block">{complaintStats.awaitingVerification}</span>
-              <span className="text-[9px] text-purple-600 dark:text-purple-400">Senior review</span>
+              <span className="text-[11px] uppercase font-bold text-purple-800 dark:text-purple-300 block">4. Awaiting</span>
+              <span className="text-2xl font-black text-purple-900 dark:text-purple-200 mt-1 block">{complaintStats.awaitingVerification}</span>
+              <span className="text-[10px] font-semibold text-purple-600 dark:text-purple-400">Senior review</span>
             </Link>
 
             <Link
               to="/complaints?status=Verified Violation"
-              className="p-3 rounded-xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200/80 dark:border-rose-900/40 hover:bg-rose-100/60 dark:hover:bg-rose-900/30 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-rose-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-rose-800 dark:text-rose-300 block">5. Verified</span>
-              <span className="text-xl font-bold text-rose-950 dark:text-rose-200 mt-1 block">{complaintStats.verifiedViolation}</span>
-              <span className="text-[9px] text-rose-700 dark:text-rose-400">Confirmed breach</span>
+              <span className="text-[11px] uppercase font-bold text-rose-800 dark:text-rose-300 block">5. Verified</span>
+              <span className="text-2xl font-black text-rose-900 dark:text-rose-200 mt-1 block">{complaintStats.verifiedViolation}</span>
+              <span className="text-[10px] font-semibold text-rose-700 dark:text-rose-400">Confirmed breach</span>
             </Link>
 
             <Link
               to="/complaints?status=Not Verified"
-              className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 hover:bg-slate-100/80 dark:hover:bg-slate-700/60 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-slate-700 dark:text-slate-300 block">6. Dismissed</span>
-              <span className="text-xl font-bold text-slate-900 dark:text-white mt-1 block">{complaintStats.notVerified}</span>
-              <span className="text-[9px] text-slate-500 dark:text-slate-400">Compliant</span>
+              <span className="text-[11px] uppercase font-bold text-slate-700 dark:text-slate-300 block">6. Dismissed</span>
+              <span className="text-2xl font-black text-slate-900 dark:text-white mt-1 block">{complaintStats.notVerified}</span>
+              <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Compliant</span>
             </Link>
 
             <Link
               to="/complaints?status=Action Taken"
-              className="p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-900/40 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/30 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-emerald-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-emerald-800 dark:text-emerald-300 block">7. Action</span>
-              <span className="text-xl font-bold text-emerald-950 dark:text-emerald-200 mt-1 block">{complaintStats.actionTaken}</span>
-              <span className="text-[9px] text-emerald-700 dark:text-emerald-400">Fine/Remedy</span>
+              <span className="text-[11px] uppercase font-bold text-emerald-800 dark:text-emerald-300 block">7. Action</span>
+              <span className="text-2xl font-black text-emerald-900 dark:text-emerald-200 mt-1 block">{complaintStats.actionTaken}</span>
+              <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400">Fine/Remedy</span>
             </Link>
 
             <Link
               to="/complaints?status=Closed"
-              className="p-3 rounded-xl bg-teal-50/50 dark:bg-teal-950/20 border border-teal-200/80 dark:border-teal-900/40 hover:bg-teal-100/60 dark:hover:bg-teal-900/30 transition-colors"
+              className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-teal-300 shadow-2xs transition-all"
             >
-              <span className="text-[10px] uppercase font-semibold text-teal-800 dark:text-teal-300 block">8. Closed</span>
-              <span className="text-xl font-bold text-teal-950 dark:text-teal-200 mt-1 block">{complaintStats.closed}</span>
-              <span className="text-[9px] text-teal-600 dark:text-teal-400">Final docket</span>
+              <span className="text-[11px] uppercase font-bold text-teal-800 dark:text-teal-300 block">8. Closed</span>
+              <span className="text-2xl font-black text-teal-900 dark:text-teal-200 mt-1 block">{complaintStats.closed}</span>
+              <span className="text-[10px] font-semibold text-teal-600 dark:text-teal-400">Final docket</span>
             </Link>
           </div>
         </div>

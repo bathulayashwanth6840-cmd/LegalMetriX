@@ -108,21 +108,21 @@ export default function RoleSwitcher({ align = 'left', className = '', variant =
         aria-label={`Current Role: ${roleLabel}. Click to switch demo role`}
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDownTrigger}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-2xs cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all shadow-2xs cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
           variant === 'sidebar'
-            ? 'bg-blue-950/80 hover:bg-blue-900 border border-blue-700/60 text-white'
-            : 'bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200/90 dark:border-slate-700 text-slate-800 dark:text-slate-100'
+            ? 'w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100'
+            : 'bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100'
         }`}
       >
-        <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-          <span className="text-[10px] uppercase tracking-wider font-mono text-slate-400 dark:text-slate-400">Role:</span>
-          <span className="font-bold max-w-[130px] truncate">{roleLabel}</span>
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" aria-hidden="true" />
+          <span className="text-[10px] uppercase tracking-wider font-mono text-slate-500 dark:text-slate-400 flex-shrink-0">Role:</span>
+          <span className="font-bold truncate text-slate-900 dark:text-white">{roleLabel}</span>
         </div>
         <ChevronDown
           size={13}
           aria-hidden="true"
-          className={`text-slate-400 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
+          className={`text-slate-500 dark:text-slate-400 transition-transform duration-150 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 

@@ -194,7 +194,7 @@ export default function Navigation() {
       {/* ── Desktop Sidebar ──────────────────────────────────────────────── */}
       <aside
         aria-label="Sidebar Navigation"
-        className="hidden sm:flex flex-col w-64 bg-[#F8F9FA] dark:bg-[#0D1526] text-slate-800 dark:text-slate-100 min-h-screen flex-shrink-0 shadow-xs border-r border-slate-200/90 dark:border-slate-800 select-none transition-colors"
+        className="hidden sm:flex flex-col w-64 bg-white dark:bg-[#0D1526] text-slate-800 dark:text-slate-100 min-h-screen flex-shrink-0 shadow-xs border-r border-slate-200 dark:border-slate-800 select-none transition-colors"
       >
         {/* Header / Logo */}
         <div className="p-4 border-b border-slate-200/90 dark:border-slate-800 flex items-center justify-between gap-2">

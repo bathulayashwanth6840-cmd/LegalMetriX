@@ -24,10 +24,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } catch (e) {
       // Storage unavailable
     }
-    return 'dark'; // Default to modern high-tech dark mode for enforcement UI
+    return 'light'; // Default to clean, high-contrast white public-service theme
   });
 
-  const [isDark, setIsDark] = useState<boolean>(true);
+  const [isDark, setIsDark] = useState<boolean>(false);
 
   useEffect(() => {
     const root = document.documentElement;
