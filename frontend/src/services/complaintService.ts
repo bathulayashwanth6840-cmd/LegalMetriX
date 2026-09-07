@@ -91,6 +91,7 @@ export function createComplaintRecord(payload: {
     expiryDate?: string;
     consumerCareDetails?: string;
     countryOfOrigin?: string;
+    fssaiNumber?: string;
     barcode?: string;
   };
   inspection: {

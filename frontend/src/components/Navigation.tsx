@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home, Camera, History, User, BookOpen,
   Globe, Video, FileText, TrendingUp, ShieldCheck,
-  FileWarning, Search, LogOut, Sparkles
+  FileWarning, Search, LogOut, Sparkles, Edit3
 } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
 import type { Language } from '../i18n/LanguageContext';
@@ -61,6 +61,19 @@ export default function Navigation() {
           icon: <Home size={18} aria-hidden="true" />,
           label: t('nav.home') || 'Dashboard',
           allowedRoles: ['citizen', 'inspector', 'admin'],
+        },
+        {
+          to: '/citizen/scan',
+          icon: <Camera size={18} aria-hidden="true" />,
+          label: 'Scan Product',
+          badge: 'AI',
+          allowedRoles: ['citizen'],
+        },
+        {
+          to: '/citizen/manual-entry',
+          icon: <Edit3 size={18} aria-hidden="true" />,
+          label: 'Manual Entry',
+          allowedRoles: ['citizen'],
         },
         {
           to: '/scan',

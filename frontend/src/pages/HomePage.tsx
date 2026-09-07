@@ -4,7 +4,7 @@ import { useRole } from '../context/RoleContext';
 import {
   Camera, ShieldCheck, Sparkles, ArrowRight,
   Video, Eye, RefreshCw, FileWarning, ChevronRight,
-  BookOpen, Search, TrendingUp, History as HistoryIcon
+  Search, TrendingUp, History as HistoryIcon, Edit3
 } from 'lucide-react';
 import { getStoredComplaints } from '../services/complaintService';
 import type { ComplaintRecord } from '../types/complaint';
@@ -172,28 +172,28 @@ export default function HomePage() {
               {isCitizen ? (
                 <>
                   <Link
+                    to="/citizen/scan"
+                    className="px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-sm rounded-2xl shadow-xl shadow-blue-500/25 flex items-center gap-2.5 transition-all active:scale-[0.98]"
+                  >
+                    <Camera size={20} />
+                    <span>Scan Product</span>
+                    <ArrowRight size={16} />
+                  </Link>
+
+                  <Link
+                    to="/citizen/manual-entry"
+                    className="px-5 py-4 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-2 transition-all active:scale-[0.98]"
+                  >
+                    <Edit3 size={16} />
+                    <span>Enter Details Manually</span>
+                  </Link>
+
+                  <Link
                     to="/complaints"
-                    className="px-5 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-xs rounded-2xl shadow-lg flex items-center gap-2 transition-all active:scale-[0.98]"
+                    className="px-4 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-1.5 transition-all"
                   >
-                    <FileWarning size={16} />
-                    <span>File / View Complaints</span>
-                    <ArrowRight size={14} />
-                  </Link>
-
-                  <Link
-                    to="/track"
-                    className="px-5 py-3.5 bg-white/15 hover:bg-white/25 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-2 transition-all active:scale-[0.98]"
-                  >
-                    <Search size={16} />
-                    <span>Track Complaint</span>
-                  </Link>
-
-                  <Link
-                    to="/rules"
-                    className="px-4 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center gap-1.5 transition-all"
-                  >
-                    <BookOpen size={15} />
-                    <span>Rules</span>
+                    <FileWarning size={15} />
+                    <span>My Complaints</span>
                   </Link>
                 </>
               ) : isOfficer ? (
@@ -263,79 +263,179 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* ── 6 Real Analytics Stats Cards ──────────────────────────────── */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-8">
-            <div className="bg-white/10 backdrop-blur-xs border border-white/15 p-4 rounded-2xl">
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-200 block">Total Audits</span>
-              <span className="text-2xl sm:text-3xl font-black text-white mt-1 block">{stats.total}</span>
-              <span className="text-[10px] text-blue-300">Logged packages</span>
-            </div>
-
-            <div className="bg-emerald-950/50 border border-emerald-500/30 p-4 rounded-2xl">
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-emerald-300 block">Compliant</span>
-              <span className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1 block">{stats.compliant}</span>
-              <span className="text-[10px] text-emerald-300/80">{stats.passRate}% pass rate</span>
-            </div>
-
-            <div className="bg-amber-950/50 border border-amber-500/30 p-4 rounded-2xl">
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-amber-300 block">Needs Review</span>
-              <span className="text-2xl sm:text-3xl font-black text-amber-400 mt-1 block">{stats.needsReview}</span>
-              <span className="text-[10px] text-amber-300/80">Officer inspection</span>
-            </div>
-
-            <div className="bg-rose-950/50 border border-rose-500/30 p-4 rounded-2xl">
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-rose-300 block">Non-Compliant</span>
-              <span className="text-2xl sm:text-3xl font-black text-rose-400 mt-1 block">{stats.nonCompliant}</span>
-              <span className="text-[10px] text-rose-300/80">Statutory breaches</span>
-            </div>
-
-            <div className="bg-purple-950/50 border border-purple-500/30 p-4 rounded-2xl">
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-purple-300 block">Violations</span>
-              <span className="text-2xl sm:text-3xl font-black text-purple-300 mt-1 block">{stats.totalViolations}</span>
-              <span className="text-[10px] text-purple-300/80">Defects identified</span>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-800 to-indigo-900 border border-blue-400/40 p-4 rounded-2xl">
-              <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-200 block">Avg Score</span>
-              <div className="flex items-baseline gap-1 mt-1">
-                <span className="text-2xl sm:text-3xl font-black text-white">{stats.avgScore}</span>
-                <span className="text-xs text-blue-300 font-bold">/ 100</span>
+          {/* ── 6 Real Analytics Stats Cards (Officer / Admin only) ───────── */}
+          {!isCitizen && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mt-8">
+              <div className="bg-white/10 backdrop-blur-xs border border-white/15 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-200 block">Total Audits</span>
+                <span className="text-2xl sm:text-3xl font-black text-white mt-1 block">{stats.total}</span>
+                <span className="text-[10px] text-blue-300">Logged packages</span>
               </div>
-              <span className="text-[10px] text-blue-300">Statutory index</span>
+
+              <div className="bg-emerald-950/50 border border-emerald-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-emerald-300 block">Compliant</span>
+                <span className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1 block">{stats.compliant}</span>
+                <span className="text-[10px] text-emerald-300/80">{stats.passRate}% pass rate</span>
+              </div>
+
+              <div className="bg-amber-950/50 border border-amber-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-amber-300 block">Needs Review</span>
+                <span className="text-2xl sm:text-3xl font-black text-amber-400 mt-1 block">{stats.needsReview}</span>
+                <span className="text-[10px] text-amber-300/80">Officer inspection</span>
+              </div>
+
+              <div className="bg-rose-950/50 border border-rose-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-rose-300 block">Non-Compliant</span>
+                <span className="text-2xl sm:text-3xl font-black text-rose-400 mt-1 block">{stats.nonCompliant}</span>
+                <span className="text-[10px] text-rose-300/80">Statutory breaches</span>
+              </div>
+
+              <div className="bg-purple-950/50 border border-purple-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-purple-300 block">Violations</span>
+                <span className="text-2xl sm:text-3xl font-black text-purple-300 mt-1 block">{stats.totalViolations}</span>
+                <span className="text-[10px] text-purple-300/80">Defects identified</span>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-800 to-indigo-900 border border-blue-400/40 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-200 block">Avg Score</span>
+                <div className="flex items-baseline gap-1 mt-1">
+                  <span className="text-2xl sm:text-3xl font-black text-white">{stats.avgScore}</span>
+                  <span className="text-xs text-blue-300 font-bold">/ 100</span>
+                </div>
+                <span className="text-[10px] text-blue-300">Statutory index</span>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* ── Citizen Summary Counter Cards ─────────────────────────────── */}
+          {isCitizen && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8">
+              <div className="bg-white/10 backdrop-blur-xs border border-white/15 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-200 block">My Complaints</span>
+                <span className="text-2xl sm:text-3xl font-black text-white mt-1 block">{complaintStats.total}</span>
+                <span className="text-[10px] text-blue-300">Registered dockets</span>
+              </div>
+
+              <div className="bg-blue-950/50 border border-blue-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-300 block">Under Review</span>
+                <span className="text-2xl sm:text-3xl font-black text-blue-400 mt-1 block">{complaintStats.underReview + complaintStats.submitted}</span>
+                <span className="text-[10px] text-blue-300/80">Queued for verification</span>
+              </div>
+
+              <div className="bg-amber-950/50 border border-amber-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-amber-300 block">In Progress</span>
+                <span className="text-2xl sm:text-3xl font-black text-amber-400 mt-1 block">{complaintStats.awaitingVerification + complaintStats.furtherEnquiry}</span>
+                <span className="text-[10px] text-amber-300/80">Field inspection</span>
+              </div>
+
+              <div className="bg-emerald-950/50 border border-emerald-500/30 p-4 rounded-2xl">
+                <span className="text-[10px] uppercase tracking-wider font-extrabold text-emerald-300 block">Resolved</span>
+                <span className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1 block">{complaintStats.actionTaken + complaintStats.closed}</span>
+                <span className="text-[10px] text-emerald-300/80">Action concluded</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* ── Main Content Body ────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 -mt-4 space-y-6 w-full">
 
-        {/* ── NEW EXTENSION: COMPLAINT & ENQUIRY OVERVIEW ──────────────────── */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-2xs space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 bg-blue-100 text-blue-900 text-[10px] font-black rounded-full uppercase">
-                  Statutory Enforcement Cell
-                </span>
-                <span className="text-xs text-slate-500 font-bold">LMR Rules 2011 Active Dockets</span>
+        {/* ── CITIZEN SPECIFIC DASHBOARD BODY ─────────────────────────────── */}
+        {isCitizen ? (
+          <div className="space-y-6">
+            {/* Primary Action Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-blue-500/15 flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center mb-4">
+                    <Camera size={26} />
+                  </div>
+                  <h3 className="text-xl font-black mb-2">Scan Product Label</h3>
+                  <p className="text-xs sm:text-sm text-blue-100 leading-relaxed mb-6 font-medium">
+                    Take a photo of any packaged product (front, back, or declarations panel) to let AI automatically extract and assess mandatory Legal Metrology declarations.
+                  </p>
+                </div>
+                <Link
+                  to="/citizen/scan"
+                  className="py-3.5 px-6 bg-white text-blue-900 font-black text-xs sm:text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 hover:bg-blue-50 transition-all self-start active:scale-[0.98]"
+                >
+                  <Camera size={16} />
+                  <span>Start Consumer Scan</span>
+                  <ArrowRight size={14} />
+                </Link>
               </div>
-              <h3 className="font-black text-slate-900 text-xl mt-1">
-                Complaint & Enquiry Overview
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Real-time breakdown of all statutory enquiries across the 8 administrative and verification stages.
-              </p>
+
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mb-4">
+                    <Edit3 size={26} />
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 mb-2">Enter Details Manually</h3>
+                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6 font-medium">
+                    If you cannot capture a clear photo, enter the printed details (MRP, Net Qty, Dates, Manufacturer) manually to run a consumer compliance check.
+                  </p>
+                </div>
+                <Link
+                  to="/citizen/manual-entry"
+                  className="py-3.5 px-6 bg-slate-900 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 hover:bg-slate-800 transition-all self-start active:scale-[0.98]"
+                >
+                  <Edit3 size={16} />
+                  <span>Enter Details Manually</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
 
-            <Link
-              to="/complaints"
-              className="px-5 py-2.5 bg-[var(--color-navy)] hover:bg-blue-900 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
-            >
-              <span>View All Complaints ({complaintStats.total})</span>
-              <ArrowRight size={14} />
-            </Link>
+            {/* Quick Track Complaint Bar */}
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold">
+                  <Search size={20} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black text-slate-900">Track an Existing Complaint</h4>
+                  <p className="text-xs text-slate-500">Enter your official CMP tracking number to see current verification status.</p>
+                </div>
+              </div>
+
+              <Link
+                to="/track"
+                className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white text-xs font-black rounded-xl shadow-md flex items-center gap-2 transition-all self-stretch sm:self-auto justify-center"
+              >
+                <span>Track Complaint Docket</span>
+                <ChevronRight size={14} />
+              </Link>
+            </div>
           </div>
+        ) : (
+          /* ── INSPECTOR / ADMIN DASHBOARD BODY ──────────────────────────── */
+          <>
+            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-2xs space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 bg-blue-100 text-blue-900 text-[10px] font-black rounded-full uppercase">
+                      Statutory Enforcement Cell
+                    </span>
+                    <span className="text-xs text-slate-500 font-bold">LMR Rules 2011 Active Dockets</span>
+                  </div>
+                  <h3 className="font-black text-slate-900 text-xl mt-1">
+                    Complaint & Enquiry Overview
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Real-time breakdown of all statutory enquiries across the 8 administrative and verification stages.
+                  </p>
+                </div>
+
+                <Link
+                  to="/complaints"
+                  className="px-5 py-2.5 bg-[var(--color-navy)] hover:bg-blue-900 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs transition-colors self-start sm:self-auto cursor-pointer"
+                >
+                  <span>View All Complaints ({complaintStats.total})</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
 
           {/* 8 Status Counter Cards Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
@@ -720,6 +820,8 @@ export default function HomePage() {
             )}
           </div>
         </div>
+        </>
+        )}
       </div>
     </div>
   );

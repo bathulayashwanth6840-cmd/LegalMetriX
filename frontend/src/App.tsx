@@ -16,6 +16,8 @@ import ComplaintsPage from './pages/ComplaintsPage';
 import ComplaintDetailPage from './pages/ComplaintDetailPage';
 import TrackComplaintPage from './pages/TrackComplaintPage';
 import LoginPage from './pages/LoginPage';
+import CitizenScanPage from './pages/CitizenScanPage';
+import CitizenManualEntryPage from './pages/CitizenManualEntryPage';
 
 function AppLayout() {
   const location = useLocation();
@@ -51,6 +53,26 @@ function AppLayout() {
               element={
                 <ProtectedRoute allowedRoles={['citizen', 'inspector', 'admin']}>
                   <HomePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Citizen Consumer Scan: Citizen & Admin */}
+            <Route
+              path="/citizen/scan"
+              element={
+                <ProtectedRoute allowedRoles={['citizen', 'inspector', 'admin']}>
+                  <CitizenScanPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Citizen Manual Entry: Citizen & Admin */}
+            <Route
+              path="/citizen/manual-entry"
+              element={
+                <ProtectedRoute allowedRoles={['citizen', 'inspector', 'admin']}>
+                  <CitizenManualEntryPage />
                 </ProtectedRoute>
               }
             />
