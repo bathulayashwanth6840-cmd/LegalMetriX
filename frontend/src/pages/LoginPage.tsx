@@ -93,43 +93,43 @@ export default function LoginPage() {
         {/* ── 3 Hackathon Demo Role Cards ──────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* 1. CITIZEN ROLE CARD */}
-          <div className="bg-white/10 dark:bg-slate-900/80 backdrop-blur-md rounded-3xl p-6 border border-emerald-500/30 shadow-xl hover:border-emerald-400 hover:shadow-2xl transition-all flex flex-col justify-between space-y-5 group relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl -mr-8 -mt-8 pointer-events-none" />
+          <div className="bg-white/10 dark:bg-slate-900/80 backdrop-blur-md rounded-3xl p-6 border-2 border-emerald-500/40 shadow-xl hover:border-emerald-400 hover:shadow-2xl transition-all flex flex-col justify-between space-y-5 group relative overflow-hidden ring-4 ring-emerald-500/10">
+            <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-500/15 rounded-full blur-2xl -mr-8 -mt-8 pointer-events-none" />
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                   <Users size={24} />
                 </div>
-                <span className="text-[10px] font-mono font-black uppercase px-2.5 py-1 rounded-full bg-emerald-400/20 text-emerald-300 border border-emerald-400/30">
-                  PUBLIC CITIZEN
+                <span className="text-[9px] font-mono font-black uppercase px-2.5 py-1 rounded-full bg-emerald-400 text-slate-950 shadow-sm">
+                  NO LOGIN REQUIRED
                 </span>
               </div>
 
               <div>
                 <h2 className="text-lg font-black text-white group-hover:text-emerald-300 transition-colors">
-                  Continue as Citizen
+                  Citizen & Consumer Portal
                 </h2>
                 <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                  Aggrieved consumer perspective for lodging packaged commodity grievances, tracking verification dockets, and exploring statutory rules.
+                  Open public consumer access. Check packaged product compliance with AI label scanner, review declarations, and file grievances without any account or password.
                 </p>
               </div>
 
               <div className="space-y-1.5 pt-2 border-t border-white/10 text-xs">
-                <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                  Allowed Capabilities:
+                <span className="text-[10px] uppercase font-bold text-emerald-300 block tracking-wider">
+                  Open Public Features:
                 </span>
                 <ul className="space-y-1 text-slate-200 text-[11px]">
                   <li className="flex items-center gap-1.5">
                     <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                    <span>File Complaints & Packaging Enquiries</span>
+                    <span>Instant AI Camera & Photo Label Scan</span>
                   </li>
                   <li className="flex items-center gap-1.5">
                     <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                    <span>Real-time Docket Tracking</span>
+                    <span>Preliminary Consumer Compliance Check</span>
                   </li>
                   <li className="flex items-center gap-1.5">
                     <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                    <span>Rules & Metrology Act Reference</span>
+                    <span>Report Concerns & Track via Docket ID</span>
                   </li>
                 </ul>
               </div>
@@ -138,9 +138,9 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => handleRoleLogin('citizen')}
-              className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+              className="w-full py-3.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs rounded-2xl shadow-xl shadow-emerald-900/40 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
             >
-              <span>Launch as Citizen</span>
+              <span>Launch Citizen Portal (No Login Needed)</span>
               <ArrowRight size={15} />
             </button>
           </div>
@@ -260,11 +260,15 @@ export default function LoginPage() {
             className="text-xs font-semibold text-blue-300 hover:text-white underline inline-flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Lock size={12} />
-            <span>{showManualForm ? 'Hide manual credential form' : 'Or test custom credentials / sign in manually'}</span>
+            <span>{showManualForm ? 'Hide Department Officer Login' : 'Department Officer & Administrator Login'}</span>
           </button>
 
           {showManualForm && (
             <form onSubmit={handleManualSubmit} className="mt-4 p-5 bg-white/10 rounded-2xl border border-white/20 text-left space-y-3 animate-in fade-in duration-150">
+              <div className="text-[11px] text-emerald-300 font-medium p-2.5 rounded-xl bg-emerald-950/50 border border-emerald-500/30">
+                Notice: Citizens and consumers do not require credentials. Click the green <strong>"Launch Citizen Portal"</strong> card above for instant public access.
+              </div>
+
               <div>
                 <label className="block text-xs font-bold text-blue-200 mb-1">Official ID / Email</label>
                 <input
@@ -299,7 +303,7 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-blue-200 mb-1">Demo Persona Target</label>
+                <label className="block text-xs font-bold text-blue-200 mb-1">Department Persona</label>
                 <select
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value as UserRole)}
@@ -307,7 +311,6 @@ export default function LoginPage() {
                 >
                   <option value="inspector" className="bg-slate-900 text-white">Legal Metrology Officer (#LM-204)</option>
                   <option value="admin" className="bg-slate-900 text-white">Administrator (Central Directorate)</option>
-                  <option value="citizen" className="bg-slate-900 text-white">Citizen Consumer (Public View)</option>
                 </select>
               </div>
 
@@ -316,7 +319,7 @@ export default function LoginPage() {
                 disabled={isLoading}
                 className="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl shadow transition-all cursor-pointer disabled:opacity-50"
               >
-                {isLoading ? 'Authenticating...' : 'Sign In with Selected Role'}
+                {isLoading ? 'Authenticating...' : 'Sign In as Officer / Admin'}
               </button>
             </form>
           )}

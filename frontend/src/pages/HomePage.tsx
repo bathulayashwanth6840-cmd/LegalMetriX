@@ -147,20 +147,28 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 bg-blue-900/60 border border-blue-700/60 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-widest text-blue-300 uppercase mb-3">
-                <Sparkles size={12} className="text-amber-400" />
-                <span>SIH 2024 LEGAL METROLOGY AI PLATFORM • {profile.badge}</span>
+              <div className={`inline-flex items-center gap-2 border px-3 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase mb-3 ${
+                isCitizen
+                  ? 'bg-emerald-950/70 border-emerald-400/60 text-emerald-300'
+                  : 'bg-blue-900/60 border-blue-700/60 text-blue-300'
+              }`}>
+                <Sparkles size={12} className={isCitizen ? 'text-emerald-400' : 'text-amber-400'} />
+                <span>
+                  {isCitizen
+                    ? 'CITIZEN PORTAL • OPEN PUBLIC ACCESS (NO LOGIN REQUIRED)'
+                    : `SIH 2024 LEGAL METROLOGY AI PLATFORM • ${profile.badge}`}
+                </span>
               </div>
               <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
                 {isCitizen
-                  ? 'Citizen Packaging Grievance & Compliance Portal'
+                  ? 'Citizen Packaging Consumer Check Portal'
                   : isAdmin
                   ? 'Central Metrology Directorate & Compliance Dashboard'
                   : 'Enforcement Officer Packaging Inspection Dashboard'}
               </h1>
               <p className="text-xs sm:text-sm text-blue-200 mt-2 max-w-2xl leading-relaxed font-medium">
                 {isCitizen
-                  ? 'Public citizen portal for reporting packaged commodity non-compliance, tracking verification dockets, and exploring statutory rules.'
+                  ? 'Scan a packaged product to check its declared information with AI. Instant public access — no username or password required.'
                   : isAdmin
                   ? 'Executive regulatory dashboard for real-time compliance tracking, statutory enforcement analytics, and multi-zone audit trail inspection.'
                   : 'Autonomous AI inspection suite for verifying packaged commodity declarations under the Legal Metrology (Packaged Commodities) Rules, 2011.'}

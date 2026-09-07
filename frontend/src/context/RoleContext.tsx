@@ -53,23 +53,25 @@ export interface RoleContextType {
 export const ROLE_PROFILES: Record<UserRole, RoleProfile> = {
   citizen: {
     role: 'citizen',
-    name: 'Priya Sharma (Consumer)',
-    displayName: 'Citizen',
-    badge: 'CITIZEN-PORTAL',
-    designation: 'General Citizen / Aggrieved Consumer',
-    department: 'National Consumer Helpline & Public Grievance Portal',
+    name: 'Public Consumer',
+    displayName: 'Citizen (Public)',
+    badge: 'PUBLIC-ACCESS',
+    designation: 'General Citizen / Public Consumer',
+    department: 'Open Public Access (No Login Required)',
     jurisdiction: 'Pan-India Citizen Access',
     avatarLetter: 'C',
     accentColor: 'emerald',
     allowedFeatures: [
       'Dashboard Overview',
+      'Scan Product (AI OCR)',
+      'Manual Product Entry',
       'Complaints & Enquiries',
       'Track Complaint Dockets',
       'Rules & Statutory Acts',
       'Settings & Profile',
     ],
     restrictedFeatures: [
-      'New Packaging Inspection',
+      'Official Packaging Inspection',
       '360° Video Scan',
       'Inspection History & Dossiers',
       'Inspection Summary Reports',
@@ -77,7 +79,7 @@ export const ROLE_PROFILES: Record<UserRole, RoleProfile> = {
       'Central Administrative Controls',
     ],
     description:
-      'Public consumer view designed for lodging packaged commodity grievances, tracking verification dockets, and exploring statutory rules.',
+      'Open public consumer access for scanning packaged commodities, reviewing declarations, lodging grievances, and tracking verification dockets without login credentials.',
   },
   inspector: {
     role: 'inspector',
@@ -208,7 +210,7 @@ export const RoleProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Citizen Role Permissions
     if (currentRole === 'citizen') {
-      const allowedCitizen = ['/', '/complaints', '/track', '/rules', '/profile', '/login'];
+      const allowedCitizen = ['/', '/citizen/scan', '/citizen/manual-entry', '/complaints', '/track', '/rules', '/profile', '/login'];
       const isAllowed = allowedCitizen.some(
         (allowed) => normalizedPath === allowed || (allowed !== '/' && normalizedPath.startsWith(allowed))
       );
