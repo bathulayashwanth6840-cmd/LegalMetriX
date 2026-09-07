@@ -16,8 +16,14 @@ import ComplaintsPage from './pages/ComplaintsPage';
 import ComplaintDetailPage from './pages/ComplaintDetailPage';
 import TrackComplaintPage from './pages/TrackComplaintPage';
 import LoginPage from './pages/LoginPage';
+import { useRole } from './context/RoleContext';
 import CitizenScanPage from './pages/CitizenScanPage';
 import CitizenManualEntryPage from './pages/CitizenManualEntryPage';
+
+function ScanRouteDispatcher() {
+  const { isCitizen } = useRole();
+  return isCitizen ? <CitizenScanPage /> : <ScanPage />;
+}
 
 function AppLayout() {
   const location = useLocation();
@@ -77,16 +83,12 @@ function AppLayout() {
               }
             />
 
-            {/* New Inspection Scanner: Officer & Admin only */}
+            {/* Packaging Scanner: Dispatches to CitizenScanPage for citizens, ScanPage for officers/admins */}
             <Route
               path="/scan"
               element={
-                <ProtectedRoute
-                  allowedRoles={['inspector', 'admin']}
-                  requiredRoleName="Legal Metrology Officer or Administrator"
-                  targetFeatureName="Autonomous Packaging Inspection Scanner"
-                >
-                  <ScanPage />
+                <ProtectedRoute allowedRoles={['citizen', 'inspector', 'admin']}>
+                  <ScanRouteDispatcher />
                 </ProtectedRoute>
               }
             />

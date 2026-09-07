@@ -3,10 +3,11 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Camera, Upload, ArrowRight, ArrowLeft, RefreshCw, CheckCircle2,
-  AlertTriangle, HelpCircle, ShieldAlert, Sparkles,
+  AlertTriangle, HelpCircle, ShieldAlert, Sparkles, Video,
   Store, ChevronRight, Edit3, Crop, Check, X, Info
 } from 'lucide-react';
 import ImageCropModal from '../components/ImageCropModal';
+import CameraCapture from '../components/CameraCapture';
 import { createComplaintRecord } from '../services/complaintService';
 
 interface ExtractedFieldState {
@@ -53,8 +54,9 @@ export default function CitizenScanPage() {
   const [isProcessingOcr, setIsProcessingOcr] = useState(false);
   const [ocrError, setOcrError] = useState<string | null>(null);
 
-  // Cropper State
+  // Cropper & Live Camera State
   const [isCropperOpen, setIsCropperOpen] = useState(false);
+  const [isLiveCameraOpen, setIsLiveCameraOpen] = useState(false);
   const [rawImageForCrop, setRawImageForCrop] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -104,6 +106,15 @@ export default function CitizenScanPage() {
       setPreviewUrl(url);
       setIsCropperOpen(true);
     }
+  };
+
+  const handleLiveCameraCapture = (file: File) => {
+    setSelectedFile(file);
+    const url = URL.createObjectURL(file);
+    setRawImageForCrop(url);
+    setPreviewUrl(url);
+    setIsLiveCameraOpen(false);
+    setIsCropperOpen(true);
   };
 
   // ── Trigger Shared OCR & AI Extraction ─────────────────────────────────
@@ -534,21 +545,31 @@ export default function CitizenScanPage() {
                   Supports JPG, PNG, WEBP from your phone camera or gallery.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+                <div className="flex flex-col gap-3 w-full max-w-md">
                   <button
-                    onClick={() => cameraInputRef.current?.click()}
-                    className="flex-1 py-3.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                    onClick={() => setIsLiveCameraOpen(true)}
+                    className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-xl shadow-blue-500/25 flex items-center justify-center gap-2.5 transition-all active:scale-[0.98]"
                   >
-                    <Camera size={18} />
-                    <span>Capture with Camera</span>
+                    <Video size={20} />
+                    <span>Open Device Camera (Live Viewfinder)</span>
                   </button>
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex-1 py-3.5 px-6 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs sm:text-sm rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
-                  >
-                    <Upload size={18} />
-                    <span>Upload from Gallery</span>
-                  </button>
+
+                  <div className="flex flex-col sm:flex-row gap-2.5 w-full">
+                    <button
+                      onClick={() => cameraInputRef.current?.click()}
+                      className="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                    >
+                      <Camera size={16} />
+                      <span>Take Photo</span>
+                    </button>
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                    >
+                      <Upload size={16} />
+                      <span>Upload from Gallery</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -995,6 +1016,16 @@ export default function CitizenScanPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* ── Live Device Camera Capture Modal ─────────────────────────────── */}
+      {isLiveCameraOpen && (
+        <CameraCapture
+          isOpen={isLiveCameraOpen}
+          sideLabel="Packaged Product Label"
+          onCapture={handleLiveCameraCapture}
+          onClose={() => setIsLiveCameraOpen(false)}
+        />
       )}
 
       {/* ── Image Crop Modal ─────────────────────────────────────────────── */}
