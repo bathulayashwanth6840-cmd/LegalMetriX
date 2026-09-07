@@ -60,7 +60,7 @@ const STATUS_CONFIG: Record<
 };
 
 export default function ComplaintsPage() {
-  const { currentRole, profile } = useRole();
+  const { currentRole, profile, isCitizen } = useRole();
   const [searchParams] = useSearchParams();
   const [complaints, setComplaints] = useState<ComplaintRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -166,11 +166,11 @@ export default function ComplaintsPage() {
             {/* Header Actions */}
             <div className="flex flex-wrap items-center gap-3">
               <Link
-                to="/scan"
+                to={isCitizen ? "/citizen/scan" : "/scan"}
                 className="px-5 py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-gray-950 font-black text-xs rounded-2xl shadow-lg shadow-amber-500/20 flex items-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
               >
                 <Camera size={16} />
-                <span>Scan Product to Verify</span>
+                <span>{isCitizen ? "Scan Product" : "Scan Product to Verify"}</span>
               </Link>
 
               <button
@@ -407,11 +407,11 @@ export default function ComplaintsPage() {
 
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
-                  to="/scan"
+                  to={isCitizen ? "/citizen/scan" : "/scan"}
                   className="px-6 py-3 bg-[var(--color-navy)] hover:bg-blue-900 text-white font-bold text-xs rounded-xl shadow-sm flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <Sparkles size={14} className="text-amber-400" />
-                  <span>Start Inspection & Scan Product</span>
+                  <span>{isCitizen ? "Scan Product" : "Start Inspection & Scan Product"}</span>
                 </Link>
 
                 <button

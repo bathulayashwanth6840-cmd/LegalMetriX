@@ -20,11 +20,21 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState<UserRole>('inspector');
 
-  const redirectTarget = (location.state as any)?.from?.pathname || '/';
+  const getSafeRedirect = (role: UserRole) => {
+    let target = (location.state as any)?.from?.pathname || '/';
+    if (role === 'citizen') {
+      if (target === '/scan' || target.startsWith('/scan?')) {
+        target = '/citizen/scan';
+      } else if (target.startsWith('/history') || target.startsWith('/reports') || target.startsWith('/analytics')) {
+        target = '/';
+      }
+    }
+    return target;
+  };
 
   const handleRoleLogin = (role: UserRole) => {
     loginAsRole(role);
-    navigate(redirectTarget, { replace: true });
+    navigate(getSafeRedirect(role), { replace: true });
   };
 
   const handleManualSubmit = (e: React.FormEvent) => {
@@ -33,7 +43,7 @@ export default function LoginPage() {
     setTimeout(() => {
       loginAsRole(selectedRole);
       setIsLoading(false);
-      navigate(redirectTarget, { replace: true });
+      navigate(getSafeRedirect(selectedRole), { replace: true });
     }, 400);
   };
 

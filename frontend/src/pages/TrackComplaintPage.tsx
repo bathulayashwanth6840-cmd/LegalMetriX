@@ -35,14 +35,46 @@ export default function TrackComplaintPage() {
     }
   }, [searchParams]);
 
-  const handleSearch = (idToSearch?: string) => {
+  const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+
+  const handleSearch = async (idToSearch?: string) => {
     const query = (idToSearch || complaintIdInput).trim();
     setHasSearched(true);
     if (!query) {
       setResult(null);
       return;
     }
-    const data = getPublicComplaintInfo(query);
+    let data: any = getPublicComplaintInfo(query);
+    if (!data) {
+      try {
+        const res = await fetch(`${apiUrl}/api/citizen/track/${encodeURIComponent(query)}`);
+        if (res.ok) {
+          const apiData = await res.json();
+          data = {
+            id: apiData.complaint_id,
+            productName: apiData.product_name,
+            brand: apiData.brand_name || apiData.product_name,
+            dateSubmitted: apiData.date_submitted,
+            lastUpdated: apiData.last_updated,
+            currentStatus: apiData.current_status,
+            assignedAuthority: 'Jurisdictional Legal Metrology Officer',
+            publicTrackingMessage: apiData.public_message,
+            timeline: (apiData.timeline || []).map((t: any, idx: number) => ({
+              id: `TL-${idx}`,
+              stageName: t.stage_name,
+              status: t.status,
+              timestamp: t.date || '',
+              actionSummary: t.note || '',
+              isCompleted: t.is_completed,
+              isCurrent: t.is_current,
+              isPublic: true
+            }))
+          };
+        }
+      } catch (e) {
+        console.warn('Backend tracking query failed:', e);
+      }
+    }
     setResult(data || null);
     if (idToSearch && idToSearch !== searchParams.get('id')) {
       setSearchParams({ id: idToSearch });

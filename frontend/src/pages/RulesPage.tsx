@@ -140,7 +140,10 @@ const CATEGORIES = [
   "Units and Measurements"
 ];
 
+import { useRole } from '../context/RoleContext';
+
 export default function RulesPage() {
+  const { isCitizen } = useRole();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isChecklistOpen, setIsChecklistOpen] = useState(true);
@@ -324,13 +327,13 @@ export default function RulesPage() {
               </div>
             </div>
 
-            {/* Inspection Trigger Button */}
+            {/* Inspection / Citizen Scan Trigger Button */}
             <div className="px-5 py-3.5 bg-gray-50 border-t border-gray-150 flex justify-end">
               <button
-                onClick={() => navigate('/scan')}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg text-xs flex items-center gap-1.5 transition-colors"
+                onClick={() => navigate(isCitizen ? '/citizen/scan' : '/scan')}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <span>Use This Rule During Inspection</span>
+                <span>{isCitizen ? 'Scan Product with This Rule' : 'Use This Rule During Inspection'}</span>
                 <ArrowRight size={14} />
               </button>
             </div>

@@ -511,8 +511,8 @@ export default function CitizenScanPage() {
             <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">
               Capture Product Label
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto mb-6 leading-relaxed">
-              Capture a clear image of the product label. Make sure important declarations such as MRP, Net Quantity, Manufacturer details, and Dates are visible.
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto mb-6 leading-relaxed font-medium">
+              Capture a clear image of the packaged product label. Ensure important information such as MRP, net quantity, manufacturer details, and relevant dates are visible.
             </p>
 
             {/* Hidden Inputs */}
