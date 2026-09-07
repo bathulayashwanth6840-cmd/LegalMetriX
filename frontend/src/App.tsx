@@ -106,13 +106,13 @@ function AppLayout() {
               }
             />
 
-            {/* Complaints & Enquiries: Citizen & Admin */}
+            {/* Complaints & Enquiries: Citizen, Inspector & Admin */}
             <Route
               path="/complaints"
               element={
                 <ProtectedRoute
-                  allowedRoles={['citizen', 'admin']}
-                  requiredRoleName="Citizen or Administrator"
+                  allowedRoles={['citizen', 'inspector', 'admin']}
+                  requiredRoleName="Authorized Persona"
                   targetFeatureName="Complaints & Enquiries Management"
                 >
                   <ComplaintsPage />

@@ -98,7 +98,7 @@ export default function Navigation() {
           icon: <FileWarning size={18} aria-hidden="true" />,
           label: t('nav.complaints') || 'Complaints & Enquiries',
           badge: 'NEW',
-          allowedRoles: ['citizen', 'admin'],
+          allowedRoles: ['citizen', 'inspector', 'admin'],
         },
         {
           to: '/track',
@@ -167,7 +167,7 @@ export default function Navigation() {
     { to: '/citizen/scan', icon: <Camera size={18} aria-hidden="true" />, label: 'Scan Product', allowedRoles: ['citizen'] },
     { to: '/scan', icon: <Camera size={18} aria-hidden="true" />, label: 'Scan', allowedRoles: ['inspector', 'admin'] },
     { to: '/citizen/manual-entry', icon: <Edit3 size={18} aria-hidden="true" />, label: 'Manual', allowedRoles: ['citizen'] },
-    { to: '/complaints', icon: <FileWarning size={18} aria-hidden="true" />, label: 'Complaints', allowedRoles: ['citizen', 'admin'] },
+    { to: '/complaints', icon: <FileWarning size={18} aria-hidden="true" />, label: 'Complaints', allowedRoles: ['citizen', 'inspector', 'admin'] },
     { to: '/track', icon: <Search size={18} aria-hidden="true" />, label: 'Track', allowedRoles: ['citizen', 'inspector', 'admin'] },
     { to: '/history', icon: <History size={18} aria-hidden="true" />, label: 'History', allowedRoles: ['inspector', 'admin'] },
     { to: '/analytics', icon: <TrendingUp size={18} aria-hidden="true" />, label: 'Analytics', allowedRoles: ['admin'] },

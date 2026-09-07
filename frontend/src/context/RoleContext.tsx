@@ -95,6 +95,8 @@ export const ROLE_PROFILES: Record<UserRole, RoleProfile> = {
       'Dashboard Overview',
       'New Packaging Inspection',
       '360° Single-Clip Video Scan',
+      'Complaints & Enquiries Management',
+      'Track Complaint Dockets',
       'Inspection History & Full Dossiers',
       'Certified Assessment & Summary Reports',
       'Rules & Statutory Acts',
